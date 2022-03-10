@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-use namespace std;
+using namespace std;
 
 enum lex_type {
     CHEVRON_O,
@@ -11,7 +11,7 @@ enum lex_type {
     EQUAL,
     SLASH,
     D_QUOTE
-}
+};
 
 class Lexeme {
 
@@ -28,4 +28,4 @@ class Lexeme {
     private:
         lex_type type;
         string value;
-}
+};
