@@ -12,10 +12,14 @@ class Parser {
         Parser(std::string file_name);
         ~Parser();
 
-    void analyse_lexeme();
-    void lexeme_courant();
+        // Retourne la liste de lexeme d'un du fichier
+        void analyse_lexeme();
+        void lexeme_courant();
+
+        void display_content();
 
     private:
         list<Lexeme> lex_seq;
-    
+        std::string file_content;
+
 };

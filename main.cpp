@@ -5,7 +5,7 @@
 using namespace std;
 
 int main(int argc, char *argv[]){
-    
+
     if (argc != 2) {
         cout << "Usage <program> <file>" << endl;
         return EXIT_FAILURE;
@@ -15,5 +15,6 @@ int main(int argc, char *argv[]){
 
     Parser parser(argv[1]);
 
+    parser.display_content();
     return EXIT_SUCCESS;
 }

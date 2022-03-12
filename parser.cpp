@@ -12,6 +12,8 @@ Parser::Parser(string file_name) {
         cerr << "Impossible d'ouvrir le fichier :" << file_name << endl;
     }
 
+    file >> file_content;
+
 }
 
 Parser::~Parser() {
@@ -24,4 +26,8 @@ void Parser::analyse_lexeme() {
 
 void Parser::lexeme_courant() {
 
+}
+
+void Parser::display_content() {
+    std::cout << file_content << endl;
 }
