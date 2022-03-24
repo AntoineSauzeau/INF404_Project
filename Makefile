@@ -15,6 +15,7 @@ parser.o: parser.cpp parser.hpp
 main: main.o lexeme.o parser.o
 	$(CC) -o main main.o lexeme.o parser.o
 
+
 clean:
 	rm -r *.o main
 
