@@ -20,8 +20,9 @@ Parser::~Parser() {
     cout << "Destructor Parser" << endl;
 }
 
-void Parser::analyse_lexeme() {
+void Parser::analyse_lexical() {
 
+    
 }
 
 void Parser::lexeme_courant() {
