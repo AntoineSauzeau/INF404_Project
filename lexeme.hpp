@@ -19,6 +19,8 @@ class Lexeme {
         Lexeme();
         ~Lexeme();
 
+        Lexeme(const Lexeme &l1);
+
         lex_type GetLexType();
         string GetValue();
 

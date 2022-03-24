@@ -15,6 +15,5 @@ int main(int argc, char *argv[]){
 
     Parser parser(argv[1]);
 
-    parser.display_content();
     return EXIT_SUCCESS;
 }

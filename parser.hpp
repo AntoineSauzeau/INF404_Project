@@ -24,7 +24,8 @@ class Parser {
 
         void DisplayContent();
 
-        bool ReadWord(string &buffer);
+
+        void PushList(Lexeme lex);
 
     private:
         list<Lexeme> lex_seq;

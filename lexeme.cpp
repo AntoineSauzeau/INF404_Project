@@ -8,6 +8,11 @@ Lexeme::~Lexeme() {
     cout << "Destructor Lexeme" << endl;
 }
 
+Lexeme::Lexeme(const Lexeme &l1) {
+    type = l1.type;
+    value = l1.value;
+}
+
 lex_type Lexeme::GetLexType() {
     return this->type;
 }
