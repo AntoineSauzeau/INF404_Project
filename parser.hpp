@@ -24,8 +24,12 @@ class Parser {
 
         void DisplayContent();
 
-
         void PushList(Lexeme lex);
+        bool IsAplhaNumeric(char c);
+        bool CarInLexique(char c);
+        bool IsSeparator(char c);
+
+        void LexicalError(int l, int c, char car);
 
     private:
         list<Lexeme> lex_seq;

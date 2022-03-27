@@ -38,27 +38,42 @@ void Parser::AnalyseLexical() {
     string buffer = "";
     string text = "";
     Lexeme lex = Lexeme();
-
-    getline(*file, buffer);
+    unsigned int l = 1;
 
     cout << buffer.compare("") << endl;
 
-    while(buffer.compare("")!=0){
+    while(getline(*file, buffer)){
 
         for(int i = 0; i < buffer.length(); i++){
 
+            if(!CarInLexique(buffer[i]) && !IsSeparator(buffer[i])){
+                LexicalError(l, i+1, buffer[i]);
+            }
+
             switch (sta) {
+
                 case E_INIT:
+
                     switch(buffer[i]) {
                     case '<':
                         lex.SetLexType(CHEVRON_O);
                         lex.SetValue("<");
-                        Parser::PushList(lex);
                         break;
                     case '>':
                         lex.SetLexType(CHEVRON_C);
                         lex.SetValue(">");
-                        Parser::PushList(lex);
+                        break;
+                    case '\"':
+                        lex.SetLexType(D_QUOTE);
+                        lex.SetValue("\"");
+                        break;
+                    case '\\':
+                        lex.SetLexType(SLASH);
+                        lex.SetValue("\\");
+                        break;
+                    case '=':
+                        lex.SetLexType(EQUAL);
+                        lex.SetValue("=");
                         break;
                     case 'a' ... 'z':
                     case 'A' ... 'Z':
@@ -68,54 +83,34 @@ void Parser::AnalyseLexical() {
                     default:
                         break;
                     }
+
+                    if(sta != E_TEXT && !IsSeparator(buffer[i])) {
+                        Parser::PushList(lex);
+                    }
+
                     break;
 
                     case E_TEXT:
-                        switch(buffer[i]) {
-                        case ' ':
+
+                        if(!IsAplhaNumeric(buffer[i])){
                             sta = E_INIT;
                             lex.SetLexType(TEXT);
                             lex.SetValue(text);
                             Parser::PushList(lex);
-                            text = "";
-                            break;
-                        case 'a' ... 'z':
-                        case 'A' ... 'Z':
-                            text += buffer[i];
-                            break;
-                        case '<':
-                            sta = E_INIT;
-                            lex.SetLexType(TEXT);
-                            lex.SetValue(text);
-                            Parser::PushList(lex);
-
-                            lex.SetLexType(CHEVRON_O);
-                            lex.SetValue("<");
-                            Parser::PushList(lex);
-
-                            text = "";
-                            break;
-
-                        case '>':
-                            sta = E_INIT;
-                            lex.SetLexType(TEXT);
-                            lex.SetValue(text);
-                            Parser::PushList(lex);
-
-                            lex.SetLexType(CHEVRON_C);
-                            lex.SetValue(">");
-                            Parser::PushList(lex);
-
-                            text = "";
-                            break;
                         }
+                        if(buffer[i] == ' '){
+                            text = "";
+                        }
+                        else{
+                            text += buffer[i];
+                        }
+
+                        break;
 
             default:
                 break;
             }
         }
-
-        getline(*file, buffer);
     }
 
 }
@@ -128,4 +123,40 @@ void Parser::LexemeCourant() {
 
 void Parser::DisplayContent() {
    // std::cout << file_content << endl;
+}
+
+
+bool Parser::IsAplhaNumeric(char c) {
+    return (c >= 65 && c <= 90) || (c >= 48 && c <= 57) || (c >= 97 && c <= 122);
+}
+
+bool Parser::CarInLexique(char c) {
+    
+    if(IsAplhaNumeric(c)){
+        return true;
+    }
+
+    switch (c)
+    {
+    case '<':
+    case '>':
+    case '\"':
+    case '=':
+    case '\\':
+        return true;
+        break;
+    default:
+        break;
+    }
+
+    return false;
+}
+
+bool Parser::IsSeparator(char c){
+    return c == ' ';
+}
+
+void Parser::LexicalError(int l, int c, char car) {
+    fprintf(stderr, "Erreur lexicale (%i, %i) : Le caractère %c ne fait pas partie du lexique\n", l, c, car);
+    exit(EXIT_FAILURE);
 }
