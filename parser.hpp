@@ -20,7 +20,8 @@ class Parser {
 
         // Retourne la liste de lexeme d'un du fichier
         void AnalyseLexical();
-        void LexemeCourant();
+        Lexeme LexemeCourant();
+        void NextLexeme();
 
         void DisplayContent();
 
@@ -29,10 +30,17 @@ class Parser {
         bool CarInLexique(char c);
         bool IsSeparator(char c);
 
+        void AnalyseSyntactical();
+        void RecChevronO();
+        void RecSlash();
+        void RecBaliseName();
+
         void LexicalError(int l, int c, char car);
+        void SyntacticalError(int l, int c);
 
     private:
         list<Lexeme> lex_seq;
+        list<Lexeme>::iterator it_lexeme_list;
         ifstream *file;
 
 };

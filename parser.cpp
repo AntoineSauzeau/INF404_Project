@@ -113,12 +113,33 @@ void Parser::AnalyseLexical() {
         }
     }
 
-}
-
-void Parser::LexemeCourant() {
+    it_lexeme_list = lex_seq.begin();
 
 }
 
+void Parser::AnalyseSyntactical() {
+    
+}
+
+void Parser::RecChevronO(){
+
+}
+
+void Parser::RecBaliseName() {
+
+}
+
+void Parser::RecSlash() {
+    
+}
+
+Lexeme Parser::LexemeCourant() {
+    return *it_lexeme_list;
+}
+
+void Parser::NextLexeme(){
+    it_lexeme_list++;
+}
 
 
 void Parser::DisplayContent() {
