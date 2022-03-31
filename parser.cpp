@@ -128,7 +128,6 @@ void Parser::AnalyseLexical() {
 }
 
 void Parser::AnalyseSyntactical() {
-<<<<<<< HEAD
     NextLexeme();
 
     if(LexemeCourant().GetLexType() == TEXT){
@@ -142,9 +141,6 @@ void Parser::AnalyseSyntactical() {
     else{
         SyntacticalError();
     }
-=======
-
->>>>>>> 8c36ff8cc04e7d5bd4992f773e8b5ec2b75c6fe6
 }
 
 void Parser::RecChevronO(){
