@@ -104,9 +104,9 @@ void Parser::AnalyseLexical() {
                                 lex.SetValue(s);
                                 lex.SetLexType(Lexeme::GetLexTypeFromString(s));
                                 Parser::PushList(lex);
+                            }
 
                                 text = "";
-                            }
                         }
                         else if(buffer[i] == ' '){
                             text = "";
@@ -128,6 +128,7 @@ void Parser::AnalyseLexical() {
 }
 
 void Parser::AnalyseSyntactical() {
+<<<<<<< HEAD
     NextLexeme();
 
     if(LexemeCourant().GetLexType() == TEXT){
@@ -141,6 +142,9 @@ void Parser::AnalyseSyntactical() {
     else{
         SyntacticalError();
     }
+=======
+
+>>>>>>> 8c36ff8cc04e7d5bd4992f773e8b5ec2b75c6fe6
 }
 
 void Parser::RecChevronO(){
@@ -152,7 +156,7 @@ void Parser::RecBaliseName() {
 }
 
 void Parser::RecSlash() {
-    
+
 }
 
 Lexeme Parser::LexemeCourant() {
@@ -174,7 +178,7 @@ bool Parser::IsAplhaNumeric(char c) {
 }
 
 bool Parser::CarInLexique(char c) {
-    
+
     if(IsAplhaNumeric(c)){
         return true;
     }
