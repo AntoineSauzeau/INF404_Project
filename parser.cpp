@@ -98,14 +98,17 @@ void Parser::AnalyseLexical() {
                             lex.SetValue(text);
                             Parser::PushList(lex);
 
-                            string s;
-                            s.append(1, buffer[i]);
-                            lex.SetValue(s);
-                            lex.SetLexType(Lexeme::GetLexTypeFromString(s));
-                            Parser::PushList(lex);
+                            if(buffer[i] != ' ') {
+                                string s;
+                                s.append(1, buffer[i]);
+                                lex.SetValue(s);
+                                lex.SetLexType(Lexeme::GetLexTypeFromString(s));
+                                Parser::PushList(lex);
 
+                                text = "";
+                            }
                         }
-                        if(buffer[i] == ' '){
+                        else if(buffer[i] == ' '){
                             text = "";
                         }
                         else{
