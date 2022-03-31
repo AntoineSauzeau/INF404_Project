@@ -28,3 +28,19 @@ void Lexeme::SetLexType(lex_type type) {
 void Lexeme::SetValue(string value) {
     this->value = value;
 }
+
+lex_type Lexeme::GetLexTypeFromString(string lex) {
+
+    if(lex == "<"){
+        return CHEVRON_O;
+    }
+    else if(lex == "<"){
+        return CHEVRON_C;
+    }
+    if(lex == "/"){
+        return SLASH;
+    }
+    if(lex == "\""){
+        return D_QUOTE;
+    } 
+} 

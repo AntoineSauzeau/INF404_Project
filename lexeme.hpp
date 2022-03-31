@@ -27,6 +27,8 @@ class Lexeme {
         void SetLexType(lex_type type);
         void SetValue(string value);
 
+        static lex_type GetLexTypeFromString(string lex);
+
     private:
         lex_type type;
         string value;

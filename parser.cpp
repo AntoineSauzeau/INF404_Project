@@ -97,6 +97,11 @@ void Parser::AnalyseLexical() {
                             lex.SetLexType(TEXT);
                             lex.SetValue(text);
                             Parser::PushList(lex);
+
+                            lex.SetLexType(Lexeme::GetLexTypeFromString(LexemeCourant().GetValue()));
+                            lex.SetValue(LexemeCourant().GetValue());
+                            Parser::PushList(lex);
+
                         }
                         if(buffer[i] == ' '){
                             text = "";
