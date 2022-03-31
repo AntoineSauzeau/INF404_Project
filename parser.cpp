@@ -128,7 +128,19 @@ void Parser::AnalyseLexical() {
 }
 
 void Parser::AnalyseSyntactical() {
-    
+    NextLexeme();
+
+    if(LexemeCourant().GetLexType() == TEXT){
+        Avancer();
+        RecBaliseName();
+    }
+    else if(LexemeCourant().GetLexType() == SLASH){
+        Avancer();
+        RecSlash();
+    }
+    else{
+        SyntacticalError();
+    }
 }
 
 void Parser::RecChevronO(){
@@ -173,7 +185,7 @@ bool Parser::CarInLexique(char c) {
     case '>':
     case '\"':
     case '=':
-    case '\\':
+    case '/':
         return true;
         break;
     default:
