@@ -15,5 +15,8 @@ int main(int argc, char *argv[]){
 
     Parser parser(argv[1]);
 
+    parser.NextLexeme();
+    cout << parser.LexemeCourant().GetLine() << endl;
+
     return EXIT_SUCCESS;
 }

@@ -1,11 +1,14 @@
 #include "lexeme.hpp"
 
 Lexeme::Lexeme() {
-    cout << "Constructor Lexeme" << endl;
+    //cout << "Constructor Lexeme" << endl;
+
+    this->line = 0;
+    this->column = 0;
 }
 
 Lexeme::~Lexeme() {
-    cout << "Destructor Lexeme" << endl;
+    //cout << "Destructor Lexeme" << endl;
 }
 
 Lexeme::Lexeme(const Lexeme &l1) {
@@ -44,3 +47,19 @@ lex_type Lexeme::GetLexTypeFromString(string lex) {
         return D_QUOTE;
     } 
 } 
+
+int Lexeme::GetLine(){
+    return this->line;
+}
+
+int Lexeme::GetColumn(){
+    return this->column;
+}
+
+void Lexeme::SetLine(int line) {
+    this->line = line;
+}
+
+void Lexeme::SetColumn(int column) {
+    this->column = column;
+}

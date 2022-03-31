@@ -23,13 +23,18 @@ class Lexeme {
 
         lex_type GetLexType();
         string GetValue();
+        int GetLine();
+        int GetColumn();
 
         void SetLexType(lex_type type);
         void SetValue(string value);
+        void SetLine(int line);
+        void SetColumn(int column);
 
         static lex_type GetLexTypeFromString(string lex);
 
     private:
         lex_type type;
         string value;
+        int line, column;
 };

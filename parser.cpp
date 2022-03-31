@@ -6,7 +6,7 @@ using namespace std;
 
 
 Parser::Parser(string file_name) {
-    cout << "Constructor Parser" << endl;
+    //cout << "Constructor Parser" << endl;
 
     file = new ifstream;
     file->open(file_name);
@@ -24,7 +24,7 @@ Parser::Parser(string file_name) {
 }
 
 Parser::~Parser() {
-    cout << "Destructor Parser" << endl;
+    //cout << "Destructor Parser" << endl;
 }
 
 void Parser::PushList(Lexeme lex) {
@@ -67,9 +67,9 @@ void Parser::AnalyseLexical() {
                         lex.SetLexType(D_QUOTE);
                         lex.SetValue("\"");
                         break;
-                    case '\\':
+                    case '/':
                         lex.SetLexType(SLASH);
-                        lex.SetValue("\\");
+                        lex.SetValue("/");
                         break;
                     case '=':
                         lex.SetLexType(EQUAL);
@@ -85,6 +85,8 @@ void Parser::AnalyseLexical() {
                     }
 
                     if(sta != E_TEXT && !IsSeparator(buffer[i])) {
+                        lex.SetLine(40);
+                        lex.SetColumn(i);
                         Parser::PushList(lex);
                     }
 
@@ -96,6 +98,8 @@ void Parser::AnalyseLexical() {
                             sta = E_INIT;
                             lex.SetLexType(TEXT);
                             lex.SetValue(text);
+                            lex.SetLine(40);
+                            lex.SetColumn(i - text.length() - 1);
                             Parser::PushList(lex);
 
                             if(buffer[i] != ' ') {
@@ -103,6 +107,8 @@ void Parser::AnalyseLexical() {
                                 s.append(1, buffer[i]);
                                 lex.SetValue(s);
                                 lex.SetLexType(Lexeme::GetLexTypeFromString(s));
+                                lex.SetLine(40);
+                                lex.SetColumn(i);
                                 Parser::PushList(lex);
                             }
 
@@ -128,7 +134,7 @@ void Parser::AnalyseLexical() {
 }
 
 void Parser::AnalyseSyntactical() {
-    NextLexeme();
+    /*NextLexeme();
 
     if(LexemeCourant().GetLexType() == TEXT){
         Avancer();
@@ -140,7 +146,7 @@ void Parser::AnalyseSyntactical() {
     }
     else{
         SyntacticalError();
-    }
+    }*/
 }
 
 void Parser::RecChevronO(){
