@@ -32,11 +32,15 @@ class Parser {
 
         void AnalyseSyntactical();
         void RecChevronO();
+        void RecChevronC();
         void RecSlash();
         void RecBaliseName();
+        void RecAttributeName();
+        void RecEqual();
+        void RecAttribute();
 
         void LexicalError(int l, int c, char car);
-        void SyntacticalError(int l, int c);
+        void SyntacticalError(Lexeme lex);
 
     private:
         list<Lexeme> lex_seq;

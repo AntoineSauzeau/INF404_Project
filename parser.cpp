@@ -85,7 +85,7 @@ void Parser::AnalyseLexical() {
                     }
 
                     if(sta != E_TEXT && !IsSeparator(buffer[i])) {
-                        lex.SetLine(40);
+                        lex.SetLine(l);
                         lex.SetColumn(i);
                         Parser::PushList(lex);
                     }
@@ -98,7 +98,7 @@ void Parser::AnalyseLexical() {
                             sta = E_INIT;
                             lex.SetLexType(TEXT);
                             lex.SetValue(text);
-                            lex.SetLine(40);
+                            lex.SetLine(l);
                             lex.SetColumn(i - text.length() - 1);
                             Parser::PushList(lex);
 
@@ -107,7 +107,7 @@ void Parser::AnalyseLexical() {
                                 s.append(1, buffer[i]);
                                 lex.SetValue(s);
                                 lex.SetLexType(Lexeme::GetLexTypeFromString(s));
-                                lex.SetLine(40);
+                                lex.SetLine(l);
                                 lex.SetColumn(i);
                                 Parser::PushList(lex);
                             }
@@ -134,31 +134,107 @@ void Parser::AnalyseLexical() {
 }
 
 void Parser::AnalyseSyntactical() {
-    /*NextLexeme();
-
-    if(LexemeCourant().GetLexType() == TEXT){
-        Avancer();
-        RecBaliseName();
-    }
-    else if(LexemeCourant().GetLexType() == SLASH){
-        Avancer();
-        RecSlash();
-    }
-    else{
-        SyntacticalError();
-    }*/
+    RecChevronO();
 }
 
 void Parser::RecChevronO(){
 
+    if(LexemeCourant().GetLexType() == TEXT){
+        NextLexeme();
+        RecBaliseName();
+    }
+    else if(LexemeCourant().GetLexType() == SLASH){
+        NextLexeme();
+        RecSlash();
+    }
+    else{
+        SyntacticalError(LexemeCourant());
+    }
+}
+
+void Parser::RecChevronC() {
+
+    if(LexemeCourant().GetLexType() == TEXT){
+        NextLexeme();
+    }
+    else if(LexemeCourant().GetLexType() == CHEVRON_O){
+        NextLexeme();
+        RecChevronO();
+    }
+    else{
+        SyntacticalError(LexemeCourant());
+    }
 }
 
 void Parser::RecBaliseName() {
 
+    if(LexemeCourant().GetLexType() == TEXT){
+        NextLexeme();
+        RecAttributeName();
+    }
+    else if(LexemeCourant().GetLexType() == CHEVRON_C) {
+        NextLexeme();
+        RecChevronC();
+    }
+    else {
+        SyntacticalError(LexemeCourant());
+    }
+}
+
+void Parser::RecAttributeName() {
+
+    if(LexemeCourant().GetLexType() == EQUAL) {
+        NextLexeme();
+        RecEqual();
+    }
+    else {
+        SyntacticalError(LexemeCourant());
+    }
 }
 
 void Parser::RecSlash() {
+    
+    if(LexemeCourant().GetLexType() == TEXT){
+        NextLexeme();
+        if(LexemeCourant().GetLexType() == CHEVRON_C){
+            NextLexeme();
+        }
+        else{
+            SyntacticalError(LexemeCourant());
+        }
+    }
+    else {
+        SyntacticalError(LexemeCourant());
+    }
+}
 
+void Parser::RecEqual() {
+
+    if(LexemeCourant().GetLexType() == TEXT) {
+        NextLexeme();
+        RecAttribute();
+    }
+    else {
+        SyntacticalError(LexemeCourant());
+    }
+}
+
+void Parser::RecAttribute() {
+
+    if(LexemeCourant().GetLexType() == D_QUOTE){
+        NextLexeme();
+        if(LexemeCourant().GetLexType() != TEXT){
+            SyntacticalError(LexemeCourant());
+        }
+        NextLexeme();
+        if(LexemeCourant().GetLexType() != D_QUOTE){
+            SyntacticalError(LexemeCourant());
+        }
+        NextLexeme();
+    }
+    else{
+        SyntacticalError(LexemeCourant());
+    }
 }
 
 Lexeme Parser::LexemeCourant() {
@@ -208,4 +284,8 @@ bool Parser::IsSeparator(char c){
 void Parser::LexicalError(int l, int c, char car) {
     fprintf(stderr, "Erreur lexicale (%i, %i) : Le caractère %c ne fait pas partie du lexique\n", l, c, car);
     exit(EXIT_FAILURE);
+}
+
+void Parser::SyntacticalError(Lexeme lexeme) {
+    std::cerr << "Erreur syntaxique (" << lexeme.GetLine() << ", " << lexeme.GetColumn() << ") : " << std::endl;
 }

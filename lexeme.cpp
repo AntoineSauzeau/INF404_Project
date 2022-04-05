@@ -14,6 +14,9 @@ Lexeme::~Lexeme() {
 Lexeme::Lexeme(const Lexeme &l1) {
     type = l1.type;
     value = l1.value;
+
+    this->line = l1.line;
+    this->column = l1.column;
 }
 
 lex_type Lexeme::GetLexType() {
