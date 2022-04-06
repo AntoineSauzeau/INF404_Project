@@ -40,7 +40,7 @@ lex_type Lexeme::GetLexTypeFromString(string lex) {
     if(lex == "<"){
         return CHEVRON_O;
     }
-    else if(lex == "<"){
+    else if(lex == ">"){
         return CHEVRON_C;
     }
     if(lex == "/"){

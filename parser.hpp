@@ -45,6 +45,7 @@ class Parser {
     private:
         list<Lexeme> lex_seq;
         list<Lexeme>::iterator it_lexeme_list;
+        //bool lex_seq_end = false;
         ifstream *file;
 
 };

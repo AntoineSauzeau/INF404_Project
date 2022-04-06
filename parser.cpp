@@ -129,12 +129,20 @@ void Parser::AnalyseLexical() {
         }
     }
 
+    lex.SetLexType(END);
+    lex.SetValue("FIN DE CHAINE");
+    Parser::PushList(lex);
+
     it_lexeme_list = lex_seq.begin();
 
 }
 
 void Parser::AnalyseSyntactical() {
     RecChevronO();
+
+    if(LexemeCourant().GetLexType() != END){
+        SyntacticalError(LexemeCourant());
+    }
 }
 
 void Parser::RecChevronO(){
@@ -239,10 +247,13 @@ void Parser::RecAttribute() {
 
 Lexeme Parser::LexemeCourant() {
     return *it_lexeme_list;
+
 }
 
 void Parser::NextLexeme(){
-    it_lexeme_list++;
+    if(it_lexeme_list != lex_seq.end()){
+        it_lexeme_list++;
+    }
 }
 
 

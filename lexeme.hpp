@@ -10,7 +10,8 @@ enum lex_type {
     TEXT,
     EQUAL,
     SLASH,
-    D_QUOTE
+    D_QUOTE,
+    END
 };
 
 class Lexeme {
