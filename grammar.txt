@@ -1,0 +1,1 @@
+expr -> < nom_balise seq_attribut > expr < / nom_balise >
