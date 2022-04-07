@@ -43,12 +43,15 @@ lex_type Lexeme::GetLexTypeFromString(string lex) {
     else if(lex == ">"){
         return CHEVRON_C;
     }
-    if(lex == "/"){
+    else if(lex == "/"){
         return SLASH;
     }
-    if(lex == "\""){
+    else if(lex == "\""){
         return D_QUOTE;
-    } 
+    }
+    else if(lex == "=") {
+        return EQUAL;
+    }
 } 
 
 int Lexeme::GetLine(){

@@ -15,7 +15,10 @@ Parser::Parser(string file_name) {
         cerr << "Impossible d'ouvrir le fichier :" << file_name << endl;
     }
 
+    std::cout << "Analyse..." << std::endl;
     AnalyseLexical();
+    AnalyseSyntactical();
+    std::cout << "\033[1;32mAucune erreur détectée !\033[0m" << std::endl;
 
     for (auto &i: Parser::lex_seq) {
         cout << i.GetValue() << " -- ";
@@ -149,6 +152,9 @@ void Parser::AnalyseSyntactical() {
 void Parser::RecDblBaliseExpr() {
 
     if(LexemeCourant().GetLexType() != CHEVRON_O){
+        return;
+    }
+    else if(GetNextLexemeType() == SLASH) {
         return;
     }
 
@@ -289,12 +295,6 @@ void Parser::NextLexeme(){
     }
 }
 
-
-void Parser::DisplayContent() {
-   // std::cout << file_content << endl;
-}
-
-
 bool Parser::IsAplhaNumeric(char c) {
     return (c >= 65 && c <= 90) || (c >= 48 && c <= 57) || (c >= 97 && c <= 122);
 }
@@ -322,11 +322,11 @@ bool Parser::CarInLexique(char c) {
 }
 
 bool Parser::IsSeparator(char c){
-    return c == ' ';
+    return c == ' ' || c == '\n' || c == '\r';
 }
 
 void Parser::LexicalError(int l, int c, char car) {
-    fprintf(stderr, "Erreur lexicale (%i, %i) : Le caractère %c ne fait pas partie du lexique\n", l, c, car);
+    std::cerr << "\033[1;31mErreur lexicale (" << l << ", " << c << ") : Le caractère " << car << " ne fait pas partie du lexique\033[0m" << std::endl;
     exit(EXIT_FAILURE);
 }
 
@@ -336,4 +336,9 @@ void Parser::SyntacticalError(Lexeme lexeme) {
 
 lex_type Parser::GetNextLexemeType() {
     return ((Lexeme)*std::next(it_lexeme_list, 1)).GetLexType();
+}
+
+bool Parser::IsValidBaliseName(string name){
+
+    return name == "window" || name == "property";
 }

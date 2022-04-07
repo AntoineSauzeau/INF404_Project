@@ -24,12 +24,12 @@ class Parser {
         void NextLexeme();
         lex_type GetNextLexemeType();
 
-        void DisplayContent();
-
         void PushList(Lexeme lex);
         bool IsAplhaNumeric(char c);
         bool CarInLexique(char c);
         bool IsSeparator(char c);
+        
+        bool IsValidBaliseName(string name);
 
         void AnalyseSyntactical();
         void RecDblBaliseExpr();
@@ -40,6 +40,7 @@ class Parser {
 
         void LexicalError(int l, int c, char car);
         void SyntacticalError(Lexeme lex);
+        void SyntacticalWarning(Lexeme lex);
 
     private:
         list<Lexeme> lex_seq;
