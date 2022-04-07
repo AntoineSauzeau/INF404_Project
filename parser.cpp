@@ -138,111 +138,144 @@ void Parser::AnalyseLexical() {
 }
 
 void Parser::AnalyseSyntactical() {
-    RecChevronO();
+
+    RecDblBaliseExpr();
 
     if(LexemeCourant().GetLexType() != END){
         SyntacticalError(LexemeCourant());
     }
 }
 
-void Parser::RecChevronO(){
+void Parser::RecDblBaliseExpr() {
+
+    if(LexemeCourant().GetLexType() != CHEVRON_O){
+        return;
+    }
+
+    NextLexeme();
+    RecBaliseName();
+    RecSeqAttribute();
+
+    if(LexemeCourant().GetLexType() != CHEVRON_C){
+        SyntacticalError(LexemeCourant());
+    }
+
+    NextLexeme();
+    RecExpr();
+
+    if(LexemeCourant().GetLexType() != CHEVRON_O){
+        SyntacticalError(LexemeCourant());
+    }
+
+    NextLexeme();
+
+    if(LexemeCourant().GetLexType() != SLASH){
+        SyntacticalError(LexemeCourant());
+    }
+
+    NextLexeme();
+    RecBaliseName();
+
+    if(LexemeCourant().GetLexType() != CHEVRON_C){
+        SyntacticalError(LexemeCourant());
+    }
+
+    NextLexeme();
+}
+
+void Parser::RecExpr() {
 
     if(LexemeCourant().GetLexType() == TEXT){
-        NextLexeme();
-        RecBaliseName();
+        RecSeqText();
+        return;
     }
-    else if(LexemeCourant().GetLexType() == SLASH){
-        NextLexeme();
-        RecSlash();
+    else if(GetNextLexemeType() == SLASH) {
+        return;
     }
-    else{
+
+    NextLexeme();
+    RecBaliseName();
+    RecSeqAttribute();
+
+    if(LexemeCourant().GetLexType() != CHEVRON_C){
         SyntacticalError(LexemeCourant());
     }
+
+    NextLexeme();
+    RecExpr();
+
+    if(LexemeCourant().GetLexType() != CHEVRON_O){
+        SyntacticalError(LexemeCourant());
+    }
+
+    NextLexeme();
+
+    if(LexemeCourant().GetLexType() != SLASH){
+        SyntacticalError(LexemeCourant());
+    }
+
+    NextLexeme();
+    RecBaliseName();
+
+    if(LexemeCourant().GetLexType() != CHEVRON_C){
+        SyntacticalError(LexemeCourant());
+    }
+
+    NextLexeme();
+
+    RecDblBaliseExpr();
 }
 
-void Parser::RecChevronC() {
+void Parser::RecSeqAttribute() {
 
-    if(LexemeCourant().GetLexType() == TEXT){
-        NextLexeme();
+    if(LexemeCourant().GetLexType() == CHEVRON_C){
+        return;
     }
-    else if(LexemeCourant().GetLexType() == CHEVRON_O){
-        NextLexeme();
-        RecChevronO();
-    }
-    else{
+
+    if(LexemeCourant().GetLexType() != TEXT){
         SyntacticalError(LexemeCourant());
     }
+
+    NextLexeme();
+
+    if(LexemeCourant().GetLexType() != EQUAL){
+        SyntacticalError(LexemeCourant());
+    }
+
+    NextLexeme();
+
+    if(LexemeCourant().GetLexType() != D_QUOTE){
+        SyntacticalError(LexemeCourant());
+    }
+
+    NextLexeme();
+    RecSeqText();
+
+    if(LexemeCourant().GetLexType() != D_QUOTE){
+        SyntacticalError(LexemeCourant());
+    }
+
+    NextLexeme();
+    RecSeqAttribute();
 }
 
-void Parser::RecBaliseName() {
+void Parser::RecSeqText() {
 
-    if(LexemeCourant().GetLexType() == TEXT){
-        NextLexeme();
-        RecAttributeName();
+    if(LexemeCourant().GetLexType() != TEXT){
+        return;
     }
-    else if(LexemeCourant().GetLexType() == CHEVRON_C) {
-        NextLexeme();
-        RecChevronC();
-    }
-    else {
-        SyntacticalError(LexemeCourant());
-    }
+
+    NextLexeme();
+    RecSeqText();
 }
 
-void Parser::RecAttributeName() {
+void Parser::RecBaliseName(){
 
-    if(LexemeCourant().GetLexType() == EQUAL) {
-        NextLexeme();
-        RecEqual();
-    }
-    else {
+    if(LexemeCourant().GetLexType() != TEXT){
         SyntacticalError(LexemeCourant());
     }
-}
 
-void Parser::RecSlash() {
-    
-    if(LexemeCourant().GetLexType() == TEXT){
-        NextLexeme();
-        if(LexemeCourant().GetLexType() == CHEVRON_C){
-            NextLexeme();
-        }
-        else{
-            SyntacticalError(LexemeCourant());
-        }
-    }
-    else {
-        SyntacticalError(LexemeCourant());
-    }
-}
-
-void Parser::RecEqual() {
-
-    if(LexemeCourant().GetLexType() == TEXT) {
-        NextLexeme();
-        RecAttribute();
-    }
-    else {
-        SyntacticalError(LexemeCourant());
-    }
-}
-
-void Parser::RecAttribute() {
-
-    if(LexemeCourant().GetLexType() == D_QUOTE){
-        NextLexeme();
-        if(LexemeCourant().GetLexType() != TEXT){
-            SyntacticalError(LexemeCourant());
-        }
-        NextLexeme();
-        if(LexemeCourant().GetLexType() != D_QUOTE){
-            SyntacticalError(LexemeCourant());
-        }
-        NextLexeme();
-    }
-    else{
-        SyntacticalError(LexemeCourant());
-    }
+    NextLexeme();
 }
 
 Lexeme Parser::LexemeCourant() {
@@ -299,4 +332,8 @@ void Parser::LexicalError(int l, int c, char car) {
 
 void Parser::SyntacticalError(Lexeme lexeme) {
     std::cerr << "Erreur syntaxique (" << lexeme.GetLine() << ", " << lexeme.GetColumn() << ") : " << std::endl;
+}
+
+lex_type Parser::GetNextLexemeType() {
+    return ((Lexeme)*std::next(it_lexeme_list, 1)).GetLexType();
 }

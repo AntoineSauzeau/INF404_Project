@@ -1,5 +1,5 @@
 CC=g++
-ARGS=-c -Wall -Werror -g
+ARGS=-c -g
 
 all: main
 

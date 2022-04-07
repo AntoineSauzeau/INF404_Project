@@ -22,6 +22,7 @@ class Parser {
         void AnalyseLexical();
         Lexeme LexemeCourant();
         void NextLexeme();
+        lex_type GetNextLexemeType();
 
         void DisplayContent();
 
@@ -31,13 +32,11 @@ class Parser {
         bool IsSeparator(char c);
 
         void AnalyseSyntactical();
-        void RecChevronO();
-        void RecChevronC();
-        void RecSlash();
+        void RecDblBaliseExpr();
+        void RecExpr();
         void RecBaliseName();
-        void RecAttributeName();
-        void RecEqual();
-        void RecAttribute();
+        void RecSeqAttribute();
+        void RecSeqText();
 
         void LexicalError(int l, int c, char car);
         void SyntacticalError(Lexeme lex);

@@ -1,1 +1,19 @@
-expr -> < nom_balise seq_attribut > expr < / nom_balise >
+dbl_balise_expr -> < nom_balise seq_attribut > expr < / nom_balise >
+dbl_balise_expr -> epsilon
+expr -> < nom_balise seq_attribut > expr < / nom_balise > dbl_balise_expr
+expr -> seq_text
+expr -> epsilon
+seq_text -> TEXT seq_text
+seq_text -> epsilon
+
+seq_attribut -> TEXT EQ QUOTE seq_text QUOTE seq_attribut
+seq_attribut -> epsilon
+nom_balise -> TEXT
+
+
+
+<root>
+    <dsq></dwd>
+    <d></d>
+</root>
+
