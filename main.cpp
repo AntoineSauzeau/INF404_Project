@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "parser.hpp"
+#include "button.hpp"
 
 using namespace std;
 
@@ -14,6 +15,8 @@ int main(int argc, char *argv[]){
     std::cout << "Starting..." << std::endl;
 
     Parser parser(argv[1]);
+
+    Object* button = new Button;
 
     return EXIT_SUCCESS;
 }

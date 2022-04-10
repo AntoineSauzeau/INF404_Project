@@ -16,6 +16,6 @@ std::string Object::GetStringPropertyValue(std::string property) {
     return list_s_properties[property];
 }
 
-double Object::GetIntegerPropertyValue(std::string propery) {
+double Object::GetIntegerPropertyValue(std::string property) {
     return list_n_properties[property];
 }

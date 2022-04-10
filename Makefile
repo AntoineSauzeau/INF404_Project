@@ -12,8 +12,14 @@ lexeme.o: lexeme.cpp lexeme.hpp
 parser.o: parser.cpp parser.hpp
 	$(CC) $(ARGS) parser.cpp
 
-main: main.o lexeme.o parser.o
-	$(CC) -o main main.o lexeme.o parser.o
+object.o: object.cpp object.hpp
+	$(CC) $(ARGS) object.cpp
+
+button.o: button.cpp button.hpp object.hpp
+	$(CC) $(ARGS) button.cpp
+
+main: main.o lexeme.o parser.o button.o object.o
+	$(CC) -o main main.o lexeme.o parser.o button.o object.o
 
 
 clean:
