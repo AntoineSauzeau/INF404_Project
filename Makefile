@@ -18,8 +18,11 @@ object.o: object.cpp object.hpp
 button.o: button.cpp button.hpp object.hpp
 	$(CC) $(ARGS) button.cpp
 
-main: main.o lexeme.o parser.o button.o object.o
-	$(CC) -o main main.o lexeme.o parser.o button.o object.o
+ast_node.o: ast_node.cpp ast_node.hpp
+	$(CC) $(ARGS) ast_node.cpp
+
+main: main.o lexeme.o parser.o button.o object.o ast_node.o
+	$(CC) -o main main.o lexeme.o parser.o button.o object.o ast_node.o
 
 
 clean:

@@ -6,7 +6,6 @@ using namespace std;
 
 
 Parser::Parser(string file_name) {
-    //cout << "Constructor Parser" << endl;
 
     file = new ifstream;
     file->open(file_name);
@@ -14,20 +13,37 @@ Parser::Parser(string file_name) {
     if(!file->is_open()){
         cerr << "Impossible d'ouvrir le fichier :" << file_name << endl;
     }
+}
+
+int Parser::Analyse() {
 
     std::cout << "Analyse..." << std::endl;
-    AnalyseLexical();
-    AnalyseSyntactical();
+
+    try {
+        AnalyseLexical();
+        AnalyseSyntactical();
+    } catch(std::runtime_error& e){
+        std::cerr << e.what() << std::endl;
+        return 1;
+    }
+
     std::cout << "\033[1;32mAucune erreur détectée !\033[0m" << std::endl;
 
     for (auto &i: Parser::lex_seq) {
         cout << i.GetValue() << " -- ";
     }
     cout << endl;
+
+    return 0;
 }
 
 Parser::~Parser() {
-    //cout << "Destructor Parser" << endl;
+
+    file->close();
+
+    for(std::vector<Object*>::iterator it = l_object.begin() ; it != l_object.end(); ++it){
+        delete *it;
+    }
 }
 
 void Parser::PushList(Lexeme lex) {
@@ -140,75 +156,56 @@ void Parser::AnalyseLexical() {
 
 }
 
-void Parser::AnalyseSyntactical() {
+AstNode* Parser::AnalyseSyntactical() {
 
-    RecDblBaliseExpr();
+    AstNode *head = RecTagCouple(nullptr);
 
     if(LexemeCourant().GetLexType() != END){
         SyntacticalError(LexemeCourant());
     }
+
+    return head;
 }
 
-void Parser::RecDblBaliseExpr() {
-
-    if(LexemeCourant().GetLexType() != CHEVRON_O){
-        return;
-    }
-    else if(GetNextLexemeType() == SLASH) {
-        return;
-    }
-
-    NextLexeme();
-    RecBaliseName();
-    RecSeqAttribute();
-
-    if(LexemeCourant().GetLexType() != CHEVRON_C){
-        SyntacticalError(LexemeCourant());
-    }
-
-    NextLexeme();
-    RecExpr();
-
-    if(LexemeCourant().GetLexType() != CHEVRON_O){
-        SyntacticalError(LexemeCourant());
-    }
-
-    NextLexeme();
-
-    if(LexemeCourant().GetLexType() != SLASH){
-        SyntacticalError(LexemeCourant());
-    }
-
-    NextLexeme();
-    RecBaliseName();
-
-    if(LexemeCourant().GetLexType() != CHEVRON_C){
-        SyntacticalError(LexemeCourant());
-    }
-
-    NextLexeme();
+AstNode* Parser::RecTagCouple(AstNode* parent) {
+    RecExpr(true);
 }
 
-void Parser::RecExpr() {
+AstNode* Parser::RecExpr(bool tag_couple, AstNode* parent) {
 
-    if(LexemeCourant().GetLexType() == TEXT){
-        RecSeqText();
-        return;
+    if(tag_couple){
+        if(LexemeCourant().GetLexType() != CHEVRON_O){
+            SyntacticalError(LexemeCourant());
+        }
     }
-    else if(GetNextLexemeType() == SLASH) {
-        return;
+    else{
+        if(LexemeCourant().GetLexType() == TEXT){
+            RecSeqText(nullptr);
+            return nullptr;
+        }
     }
+
+    if(GetNextLexemeType() == SLASH) {
+        return nullptr;
+    }
+
+    std::string tag1_name;
+    std::string tag2_name;
+    std::map<std::string, std::string> l_attribute;
 
     NextLexeme();
-    RecBaliseName();
-    RecSeqAttribute();
+    tag1_name = RecTagName();
+    RecSeqAttribute(l_attribute);
 
     if(LexemeCourant().GetLexType() != CHEVRON_C){
         SyntacticalError(LexemeCourant());
     }
 
     NextLexeme();
-    RecExpr();
+
+    AstNode* node = new AstNode(tag1_name);
+    node->SetAttributes(l_attribute);
+    RecExpr(node);
 
     if(LexemeCourant().GetLexType() != CHEVRON_O){
         SyntacticalError(LexemeCourant());
@@ -221,7 +218,11 @@ void Parser::RecExpr() {
     }
 
     NextLexeme();
-    RecBaliseName();
+    tag2_name = RecTagName();
+
+    if(tag1_name != tag2_name) {
+        SyntacticalError(LexemeCourant());
+    }
 
     if(LexemeCourant().GetLexType() != CHEVRON_C){
         SyntacticalError(LexemeCourant());
@@ -229,10 +230,17 @@ void Parser::RecExpr() {
 
     NextLexeme();
 
-    RecDblBaliseExpr();
+    if(!tag_couple){
+        RecTagCouple(parent);
+    }
+
+    return node;
 }
 
-void Parser::RecSeqAttribute() {
+void Parser::RecSeqAttribute(std::map<std::string, std::string> &l_attribute) {
+
+    std::string a_name;
+    std::string a_value;
 
     if(LexemeCourant().GetLexType() == CHEVRON_C){
         return;
@@ -241,6 +249,8 @@ void Parser::RecSeqAttribute() {
     if(LexemeCourant().GetLexType() != TEXT){
         SyntacticalError(LexemeCourant());
     }
+
+    a_name = LexemeCourant().GetValue();
 
     NextLexeme();
 
@@ -255,33 +265,50 @@ void Parser::RecSeqAttribute() {
     }
 
     NextLexeme();
-    RecSeqText();
+    RecSeqText(&a_value);
 
     if(LexemeCourant().GetLexType() != D_QUOTE){
         SyntacticalError(LexemeCourant());
     }
 
+    l_attribute[a_name] = a_value;
+
     NextLexeme();
-    RecSeqAttribute();
+    RecSeqAttribute(l_attribute);
 }
 
-void Parser::RecSeqText() {
+void Parser::RecSeqText(std::string *text) {
 
     if(LexemeCourant().GetLexType() != TEXT){
         return;
     }
 
+    if(text != nullptr){
+        *(text) += LexemeCourant().GetValue();
+    }
+
     NextLexeme();
-    RecSeqText();
+    RecSeqText(text);
 }
 
-void Parser::RecBaliseName(){
+std::string Parser::RecTagName(){
 
     if(LexemeCourant().GetLexType() != TEXT){
         SyntacticalError(LexemeCourant());
     }
 
+    std::string tag_name;
+    tag_name = LexemeCourant().GetValue();
     NextLexeme();
+    
+    return tag_name;
+}
+
+Object* Parser::CreateGoodObjectFromHisName(std::string name) {
+
+    if(name == "button") {
+        return new Button;
+    }
 }
 
 Lexeme Parser::LexemeCourant() {
@@ -326,19 +353,26 @@ bool Parser::IsSeparator(char c){
 }
 
 void Parser::LexicalError(int l, int c, char car) {
-    std::cerr << "\033[1;31mErreur lexicale (" << l << ", " << c << ") : Le caractère " << car << " ne fait pas partie du lexique\033[0m" << std::endl;
-    exit(EXIT_FAILURE);
+
+    std::ostringstream error_string_s;
+    error_string_s << "\033[1;31mErreur lexicale (" << l << ", " << c << ") : Le caractère " << car << " ne fait pas partie du lexique\033[0m" << std::endl;
+    
+    throw runtime_error(error_string_s.str());
 }
 
 void Parser::SyntacticalError(Lexeme lexeme) {
-    std::cerr << "Erreur syntaxique (" << lexeme.GetLine() << ", " << lexeme.GetColumn() << ") : " << std::endl;
+
+    std::ostringstream error_string_s;
+    error_string_s << "\033[1;31mErreur syntaxique (" << lexeme.GetLine() << ", " << lexeme.GetColumn() << ")\033[0m" << std::endl;
+
+    throw runtime_error(error_string_s.str());
 }
 
 lex_type Parser::GetNextLexemeType() {
     return ((Lexeme)*std::next(it_lexeme_list, 1)).GetLexType();
 }
 
-bool Parser::IsValidBaliseName(string name){
+bool Parser::IsValidTagName(string name){
 
     return name == "window" || name == "property";
 }

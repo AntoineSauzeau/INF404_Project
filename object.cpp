@@ -1,7 +1,7 @@
 #include "object.hpp"
 
-Object::Object() {
-
+Object::Object(Object *parent) {
+    this->parent = parent;
 }
 
 void Object::SetStringPropertyValue(std::string property, std::string value) {
@@ -18,4 +18,8 @@ std::string Object::GetStringPropertyValue(std::string property) {
 
 double Object::GetIntegerPropertyValue(std::string property) {
     return list_n_properties[property];
+}
+
+void Object::AddChildren(Object *children) {
+    l_children.push_back(children);
 }

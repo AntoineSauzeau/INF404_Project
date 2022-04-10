@@ -2,7 +2,7 @@
 
 #include "object.hpp"
 
-class Button : protected Object {
+class Button : public Object {
 
     public:
         Button();
