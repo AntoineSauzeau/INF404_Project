@@ -11,6 +11,7 @@ class Object {
 
         void SetStringPropertyValue(std::string property, std::string value);
         void SetIntegerPropertyValue(std::string property, double value);
+        void SetParent(Object *parent);
 
         std::string GetStringPropertyValue(std::string property);
         double GetIntegerPropertyValue(std::string propery);

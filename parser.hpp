@@ -46,6 +46,8 @@ class Parser {
         void RecSeqAttribute(std::map<std::string, std::string> &l_attribute);
         void RecSeqText(std::string *text);
         Object* CreateGoodObjectFromHisName(std::string name);
+        void CreateObjectsFromAst(AstNode* node, Object* parent);
+        void SetObjectPropertiesFromAst(AstNode* node, Object* parent);
 
         void LexicalError(int l, int c, char car);
         void SyntacticalError(Lexeme lex);

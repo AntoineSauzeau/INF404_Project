@@ -23,3 +23,7 @@ double Object::GetIntegerPropertyValue(std::string property) {
 void Object::AddChildren(Object *children) {
     l_children.push_back(children);
 }
+
+void Object::SetParent(Object* parent) {
+    this->parent = parent;
+}

@@ -164,6 +164,8 @@ AstNode* Parser::AnalyseSyntactical() {
         SyntacticalError(LexemeCourant());
     }
 
+    CreateObjectsFromAst(head, nullptr);
+
     return head;
 }
 
@@ -180,8 +182,13 @@ AstNode* Parser::RecExpr(bool tag_couple, AstNode* parent) {
     }
     else{
         if(LexemeCourant().GetLexType() == TEXT){
-            RecSeqText(nullptr);
-            return nullptr;
+            std::string text;
+            RecSeqText(&text);
+
+            AstNode* node = new AstNode(text);
+            parent->AddChildren(node);
+
+            return node;
         }
     }
 
@@ -205,6 +212,11 @@ AstNode* Parser::RecExpr(bool tag_couple, AstNode* parent) {
 
     AstNode* node = new AstNode(tag1_name);
     node->SetAttributes(l_attribute);
+
+    if(parent != nullptr){
+        parent->AddChildren(node);
+    }
+
     RecExpr(node);
 
     if(LexemeCourant().GetLexType() != CHEVRON_O){
@@ -308,6 +320,39 @@ Object* Parser::CreateGoodObjectFromHisName(std::string name) {
 
     if(name == "button") {
         return new Button;
+    }
+}
+
+void Parser::CreateObjectsFromAst(AstNode* node, Object* parent) {
+    
+    Object* object = CreateGoodObjectFromHisName(node->GetNodeName());
+    object->SetParent(parent);
+
+    if(parent != nullptr){
+        parent->AddChildren(object);
+    }
+
+    l_object.push_back(object);
+
+    for(std::vector<AstNode*>::iterator child = node->GetChildrens()->begin(); child != node->GetChildrens()->end(); child++){
+        
+        if((*child)->GetNodeName() == "property"){
+            SetObjectPropertiesFromAst(*child, object);
+        }
+        else{
+            CreateObjectsFromAst(*child, object);
+        }
+    }
+}
+
+void Parser::SetObjectPropertiesFromAst(AstNode* node, Object* parent) {
+
+    for(std::vector<AstNode*>::iterator child = node->GetChildrens()->begin(); child != node->GetChildrens()->end(); child++){
+        
+        std::string attribute = (*child)->GetNodeName();
+        std::string value = (*child)->GetChildrens()->at(0)->GetNodeName();
+
+        parent->SetStringPropertyValue(attribute, value);
     }
 }
 
