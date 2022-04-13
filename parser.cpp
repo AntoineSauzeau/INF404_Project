@@ -15,13 +15,13 @@ Parser::Parser(string file_name) {
     }
 }
 
-int Parser::Analyse() {
+int Parser::Analyse(AstNode *head_ast) {
 
     std::cout << "Analyse..." << std::endl;
 
     try {
         AnalyseLexical();
-        AnalyseSyntactical();
+        head_ast = AnalyseSyntactical();
     } catch(std::runtime_error& e){
         std::cerr << e.what() << std::endl;
         return 1;
@@ -95,6 +95,7 @@ void Parser::AnalyseLexical() {
                         lex.SetValue("=");
                         break;
                     case 'a' ... 'z':
+                    case '0' ... '9':
                     case 'A' ... 'Z':
                         sta = E_TEXT;
                         text += buffer[i];
@@ -164,13 +165,11 @@ AstNode* Parser::AnalyseSyntactical() {
         SyntacticalError(LexemeCourant());
     }
 
-    CreateObjectsFromAst(head, nullptr);
-
     return head;
 }
 
 AstNode* Parser::RecTagCouple(AstNode* parent) {
-    RecExpr(true);
+    return RecExpr(true, parent);
 }
 
 AstNode* Parser::RecExpr(bool tag_couple, AstNode* parent) {
@@ -202,6 +201,10 @@ AstNode* Parser::RecExpr(bool tag_couple, AstNode* parent) {
 
     NextLexeme();
     tag1_name = RecTagName();
+    if(!IsValidTagName(tag1_name)){
+        SyntacticalError(LexemeCourant());
+    }
+
     RecSeqAttribute(l_attribute);
 
     if(LexemeCourant().GetLexType() != CHEVRON_C){
@@ -217,7 +220,7 @@ AstNode* Parser::RecExpr(bool tag_couple, AstNode* parent) {
         parent->AddChildren(node);
     }
 
-    RecExpr(node);
+    RecExpr(false, node);
 
     if(LexemeCourant().GetLexType() != CHEVRON_O){
         SyntacticalError(LexemeCourant());
@@ -316,19 +319,34 @@ std::string Parser::RecTagName(){
     return tag_name;
 }
 
-Object* Parser::CreateGoodObjectFromHisName(std::string name) {
+Object* Parser::CreateGoodObjectFromHisName(std::string name,  std::map<std::string, std::string> *l_property) {
 
     if(name == "button") {
-        return new Button;
+        return new Button();
+    }
+    else if(name == "window"){
+        return new Window(l_property);
     }
 }
 
-void Parser::CreateObjectsFromAst(AstNode* node, Object* parent) {
-    
-    Object* object = CreateGoodObjectFromHisName(node->GetNodeName());
+void Parser::CreateObjectsFromAst(AstNode* node) {
+    RecCreateObjectsFromAst(node, nullptr);
+}
+
+void Parser::RecCreateObjectsFromAst(AstNode* node, Object* parent) {
+
+    std::map<std::string, std::string> l_property;
+    for(std::vector<AstNode*>::iterator child = node->GetChildrens()->begin(); child != node->GetChildrens()->end(); child++){
+
+        if((*child)->GetNodeName() == "property"){
+            l_property = GetObjectPropertiesFromAst(*child);
+        }
+    }
+
+    Object* object = CreateGoodObjectFromHisName(node->GetNodeName(), &l_property);
     object->SetParent(parent);
 
-    if(parent != nullptr){
+     if(parent != nullptr){
         parent->AddChildren(object);
     }
 
@@ -336,24 +354,25 @@ void Parser::CreateObjectsFromAst(AstNode* node, Object* parent) {
 
     for(std::vector<AstNode*>::iterator child = node->GetChildrens()->begin(); child != node->GetChildrens()->end(); child++){
         
-        if((*child)->GetNodeName() == "property"){
-            SetObjectPropertiesFromAst(*child, object);
-        }
-        else{
-            CreateObjectsFromAst(*child, object);
+        if((*child)->GetNodeName() != "property"){
+            RecCreateObjectsFromAst(*child, object);
         }
     }
 }
 
-void Parser::SetObjectPropertiesFromAst(AstNode* node, Object* parent) {
+std::map<std::string, std::string> Parser::GetObjectPropertiesFromAst(AstNode* node) {
+
+    std::map<std::string, std::string> l_property;
 
     for(std::vector<AstNode*>::iterator child = node->GetChildrens()->begin(); child != node->GetChildrens()->end(); child++){
         
-        std::string attribute = (*child)->GetNodeName();
+        std::string property = (*child)->GetNodeName();
         std::string value = (*child)->GetChildrens()->at(0)->GetNodeName();
 
-        parent->SetStringPropertyValue(attribute, value);
+        l_property[property] = value;
     }
+
+    return l_property;
 }
 
 Lexeme Parser::LexemeCourant() {
@@ -419,5 +438,5 @@ lex_type Parser::GetNextLexemeType() {
 
 bool Parser::IsValidTagName(string name){
 
-    return name == "window" || name == "property";
+    return name == "window" || name == "property" || name == "button" || name == "x" || name == "width" ||name == "height";
 }

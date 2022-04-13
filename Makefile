@@ -1,5 +1,6 @@
 CC=g++
 ARGS=-c -g
+LIBS=-lsfml-graphics
 
 all: main
 
@@ -21,8 +22,14 @@ button.o: button.cpp button.hpp object.hpp
 ast_node.o: ast_node.cpp ast_node.hpp
 	$(CC) $(ARGS) ast_node.cpp
 
-main: main.o lexeme.o parser.o button.o object.o ast_node.o
-	$(CC) -o main main.o lexeme.o parser.o button.o object.o ast_node.o
+window.o: window.cpp window.hpp
+	$(CC) $(ARGS) window.cpp
+
+interface.o: interface.cpp interface.hpp
+	$(CC) $(ARGS) interface.cpp
+
+main: main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o
+	$(CC) -o main main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o $(LIBS)
 
 
 clean:

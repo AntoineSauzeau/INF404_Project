@@ -9,6 +9,7 @@
 #include "lexeme.hpp"
 #include "object.hpp"
 #include "button.hpp"
+#include "window.hpp"
 #include "interface.hpp"
 #include "ast_node.hpp"
 
@@ -26,7 +27,7 @@ class Parser {
         ~Parser();
 
         // Retourne la liste de lexeme d'un du fichier
-        int Analyse();
+        int Analyse(AstNode *head_ast);
         void AnalyseLexical();
         Lexeme LexemeCourant();
         void NextLexeme();
@@ -45,9 +46,10 @@ class Parser {
         std::string RecTagName();
         void RecSeqAttribute(std::map<std::string, std::string> &l_attribute);
         void RecSeqText(std::string *text);
-        Object* CreateGoodObjectFromHisName(std::string name);
-        void CreateObjectsFromAst(AstNode* node, Object* parent);
-        void SetObjectPropertiesFromAst(AstNode* node, Object* parent);
+        Object* CreateGoodObjectFromHisName(std::string name,  std::map<std::string, std::string> *l_property);
+        void RecCreateObjectsFromAst(AstNode* node, Object* parent);
+        void CreateObjectsFromAst(AstNode* node);
+        std::map<std::string, std::string> GetObjectPropertiesFromAst(AstNode* node);
 
         void LexicalError(int l, int c, char car);
         void SyntacticalError(Lexeme lex);

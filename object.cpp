@@ -4,20 +4,17 @@ Object::Object(Object *parent) {
     this->parent = parent;
 }
 
-void Object::SetStringPropertyValue(std::string property, std::string value) {
-    list_s_properties[property] = value;
+void Object::SetProperty(std::string property, std::string value) {
+    l_property[property] = value;
 }
 
-void Object::SetIntegerPropertyValue(std::string property, double value) {
-    list_n_properties[property] = value;
+
+std::string Object::GetProperty(std::string property) {
+    return l_property[property];
 }
 
-std::string Object::GetStringPropertyValue(std::string property) {
-    return list_s_properties[property];
-}
-
-double Object::GetIntegerPropertyValue(std::string property) {
-    return list_n_properties[property];
+void Object::SetProperties(std::map<std::string, std::string> *l_property) {
+    this->l_property = *l_property;
 }
 
 void Object::AddChildren(Object *children) {
