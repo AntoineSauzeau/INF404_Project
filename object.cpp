@@ -13,6 +13,10 @@ std::string Object::GetProperty(std::string property) {
     return l_property[property];
 }
 
+std::vector<Object*> *Object::GetChildrens() {
+    return &l_children;
+}
+
 void Object::SetProperties(std::map<std::string, std::string> *l_property) {
     this->l_property = *l_property;
 }
@@ -23,4 +27,8 @@ void Object::AddChildren(Object *children) {
 
 void Object::SetParent(Object* parent) {
     this->parent = parent;
+}
+
+void Object::Draw() {
+    
 }

@@ -14,8 +14,11 @@ class Object {
         void SetParent(Object *parent);
 
         std::string GetProperty(std::string property);
+        std::vector<Object*> *GetChildrens();
 
         void AddChildren(Object *children);
+
+        virtual void Draw();
 
     protected:
         std::map<std::string, std::string> l_property;

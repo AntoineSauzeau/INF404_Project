@@ -15,13 +15,13 @@ Parser::Parser(string file_name) {
     }
 }
 
-int Parser::Analyse(AstNode *head_ast) {
+int Parser::Analyse(AstNode **head_ast) {
 
     std::cout << "Analyse..." << std::endl;
 
     try {
         AnalyseLexical();
-        head_ast = AnalyseSyntactical();
+        *(head_ast) = AnalyseSyntactical();
     } catch(std::runtime_error& e){
         std::cerr << e.what() << std::endl;
         return 1;
@@ -245,7 +245,11 @@ AstNode* Parser::RecExpr(bool tag_couple, AstNode* parent) {
 
     NextLexeme();
 
-    if(!tag_couple){
+    /*if(!tag_couple){
+         RecTagCouple(parent);
+    }*/
+
+    if(tag1_name != "window"){
         RecTagCouple(parent);
     }
 
@@ -327,6 +331,12 @@ Object* Parser::CreateGoodObjectFromHisName(std::string name,  std::map<std::str
     else if(name == "window"){
         return new Window(l_property);
     }
+    else if(name == "rect") {
+        return new Rect(l_property);
+    }
+    else{
+        std::cerr << "Aucun objet associé à ce nom de balise" << std::endl;
+    }
 }
 
 void Parser::CreateObjectsFromAst(AstNode* node) {
@@ -334,6 +344,8 @@ void Parser::CreateObjectsFromAst(AstNode* node) {
 }
 
 void Parser::RecCreateObjectsFromAst(AstNode* node, Object* parent) {
+
+    std::cout << node->GetNodeName() << std::endl;
 
     std::map<std::string, std::string> l_property;
     for(std::vector<AstNode*>::iterator child = node->GetChildrens()->begin(); child != node->GetChildrens()->end(); child++){
@@ -373,6 +385,10 @@ std::map<std::string, std::string> Parser::GetObjectPropertiesFromAst(AstNode* n
     }
 
     return l_property;
+}
+
+Window* Parser::GetWindowObject() {
+    return (Window*) l_object[0];
 }
 
 Lexeme Parser::LexemeCourant() {
@@ -438,5 +454,9 @@ lex_type Parser::GetNextLexemeType() {
 
 bool Parser::IsValidTagName(string name){
 
-    return name == "window" || name == "property" || name == "button" || name == "x" || name == "width" ||name == "height";
+    return name == "window" || name == "property" 
+            || name == "button" || name == "x" 
+            || name == "width" || name == "height" 
+            || name == "rect" || name == "color"
+            || name == "y" || name == "d";
 }

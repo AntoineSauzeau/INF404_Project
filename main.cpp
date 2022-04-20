@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 
 #include "parser.hpp"
 #include "button.hpp"
@@ -16,15 +17,18 @@ int main(int argc, char *argv[]){
 
     std::cout << "Starting..." << std::endl;
 
+
     Parser parser(argv[1]);
-    AstNode *head_ast;
-    if(!parser.Analyse(head_ast)){
+    AstNode **head_ast;
+    if(parser.Analyse(head_ast)){
         return EXIT_FAILURE;
     }
 
-    parser.CreateObjectsFromAst(head_ast);
+    parser.CreateObjectsFromAst(*head_ast);
+    Window *window_abstract_object = parser.GetWindowObject();
 
-    Interface interface(nullptr);
+    Interface interface(window_abstract_object);
+    interface.TreatEvents();
 
     return EXIT_SUCCESS;
 }

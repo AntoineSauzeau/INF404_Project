@@ -12,6 +12,7 @@
 #include "window.hpp"
 #include "interface.hpp"
 #include "ast_node.hpp"
+#include "rect.hpp"
 
 
 enum e_aut_state {E_INIT, E_FINAL, E_TEXT};
@@ -27,7 +28,7 @@ class Parser {
         ~Parser();
 
         // Retourne la liste de lexeme d'un du fichier
-        int Analyse(AstNode *head_ast);
+        int Analyse(AstNode **head_ast);
         void AnalyseLexical();
         Lexeme LexemeCourant();
         void NextLexeme();
@@ -50,6 +51,7 @@ class Parser {
         void RecCreateObjectsFromAst(AstNode* node, Object* parent);
         void CreateObjectsFromAst(AstNode* node);
         std::map<std::string, std::string> GetObjectPropertiesFromAst(AstNode* node);
+        Window* GetWindowObject();
 
         void LexicalError(int l, int c, char car);
         void SyntacticalError(Lexeme lex);
