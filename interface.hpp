@@ -3,16 +3,18 @@
 #include <iostream>
 
 #include "window.hpp"
+#include "rect.hpp"
+#include "circle.hpp"
 
 #include <SFML/Graphics.hpp>
 
-class Interface {
+class ProgInterface {
 
     public:
-        Interface(Window *window_abstract_object);
+        ProgInterface(Window *window_abstract_object, sf::RenderWindow *window);
 
         void TreatEvents();
-        void RecDraw(Object *object);
+        void RecDraw(Object *);
         void Draw();
 
     private:

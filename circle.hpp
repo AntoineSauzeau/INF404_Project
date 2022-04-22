@@ -7,16 +7,15 @@
 
 #include <SFML/Graphics.hpp>
 
-class Rect : public Object {
+class Circle : public Object {
 
     public:
-        Rect(std::map<std::string, std::string>* l_property, type_object type);
+        Circle(std::map<std::string, std::string>* l_property, type_object type);
         void Draw(sf::RenderWindow* window);
 
     private:
         int x = 0;
         int y = 0;
-        int width = 0;
-        int height = 0;
+        float radius = 1;
         sf::Color color;
 };

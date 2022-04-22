@@ -3,6 +3,9 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <iostream>
+
+enum type_object {WINDOW, RECT, CIRCLE};
 
 class Object {
 
@@ -15,6 +18,7 @@ class Object {
 
         std::string GetProperty(std::string property);
         std::vector<Object*> *GetChildrens();
+        type_object GetType();
 
         void AddChildren(Object *children);
 
@@ -23,6 +27,8 @@ class Object {
     protected:
         std::map<std::string, std::string> l_property;
 
-        Object* parent;
+        Object* parent = nullptr;
         std::vector<Object*> l_children;
+
+        type_object type;
 };

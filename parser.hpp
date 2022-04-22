@@ -13,6 +13,7 @@
 #include "interface.hpp"
 #include "ast_node.hpp"
 #include "rect.hpp"
+#include "circle.hpp"
 
 
 enum e_aut_state {E_INIT, E_FINAL, E_TEXT};

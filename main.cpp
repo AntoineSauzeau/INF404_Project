@@ -6,6 +6,8 @@
 #include "ast_node.hpp"
 //#include "interface.hpp"
 
+#include <SFML/Graphics.hpp>
+
 using namespace std;
 
 int main(int argc, char *argv[]){
@@ -19,15 +21,18 @@ int main(int argc, char *argv[]){
 
 
     Parser parser(argv[1]);
-    AstNode **head_ast;
-    if(parser.Analyse(head_ast)){
+    AstNode *head_ast;
+    if(parser.Analyse(&head_ast)){
         return EXIT_FAILURE;
     }
 
-    parser.CreateObjectsFromAst(*head_ast);
+    parser.CreateObjectsFromAst(head_ast);
     Window *window_abstract_object = parser.GetWindowObject();
 
-    Interface interface(window_abstract_object);
+    //Pour une raison inconnue créer la fenêtre ailleurs que dans le main ne fonctionne pas, on la crée donc ici et on passe un pointeur
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Interface");
+    ProgInterface interface(window_abstract_object, &window);
+    interface.Draw();
     interface.TreatEvents();
 
     return EXIT_SUCCESS;

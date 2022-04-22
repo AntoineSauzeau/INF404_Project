@@ -7,7 +7,7 @@
 class Window : public Object {
 
     public:
-        Window(std::map<std::string, std::string>* l_property);
+        Window(std::map<std::string, std::string>* l_property, type_object type);
 
         int GetWidth();
         int GetHeight();

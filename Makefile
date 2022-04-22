@@ -31,8 +31,11 @@ interface.o: interface.cpp interface.hpp
 rect.o: rect.cpp rect.hpp
 	$(CC) $(ARGS) rect.cpp
 
-main: main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o
-	$(CC) -o main main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o $(LIBS)
+circle.o: circle.cpp circle.hpp
+	$(CC) $(ARGS) circle.cpp
+
+main: main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o circle.o
+	$(CC) -o main main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o circle.o $(LIBS)
 
 
 clean:

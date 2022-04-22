@@ -97,6 +97,7 @@ void Parser::AnalyseLexical() {
                     case 'a' ... 'z':
                     case '0' ... '9':
                     case 'A' ... 'Z':
+                    case '.':
                         sta = E_TEXT;
                         text += buffer[i];
                         break;
@@ -114,7 +115,7 @@ void Parser::AnalyseLexical() {
 
                     case E_TEXT:
 
-                        if(!IsAplhaNumeric(buffer[i])){
+                        if(!IsAplhaNumeric(buffer[i]) && buffer[i] != '.'){
                             sta = E_INIT;
                             lex.SetLexType(TEXT);
                             lex.SetValue(text);
@@ -329,10 +330,13 @@ Object* Parser::CreateGoodObjectFromHisName(std::string name,  std::map<std::str
         return new Button();
     }
     else if(name == "window"){
-        return new Window(l_property);
+        return new Window(l_property, WINDOW);
     }
     else if(name == "rect") {
-        return new Rect(l_property);
+        return new Rect(l_property, RECT);
+    }
+    else if(name == "circle") {
+        return new Circle(l_property, CIRCLE);
     }
     else{
         std::cerr << "Aucun objet associé à ce nom de balise" << std::endl;
@@ -419,6 +423,7 @@ bool Parser::CarInLexique(char c) {
     case '\"':
     case '=':
     case '/':
+    case '.':
         return true;
         break;
     default:
@@ -458,5 +463,6 @@ bool Parser::IsValidTagName(string name){
             || name == "button" || name == "x" 
             || name == "width" || name == "height" 
             || name == "rect" || name == "color"
-            || name == "y" || name == "d";
+            || name == "y" || name == "circle"
+            || name == "radius";
 }
