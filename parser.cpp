@@ -98,6 +98,7 @@ void Parser::AnalyseLexical() {
                     case '0' ... '9':
                     case 'A' ... 'Z':
                     case '.':
+                    case '_':
                         sta = E_TEXT;
                         text += buffer[i];
                         break;
@@ -115,7 +116,7 @@ void Parser::AnalyseLexical() {
 
                     case E_TEXT:
 
-                        if(!IsAplhaNumeric(buffer[i]) && buffer[i] != '.'){
+                        if(!IsAplhaNumeric(buffer[i]) && buffer[i] != '.' && buffer[i] != '_'){
                             sta = E_INIT;
                             lex.SetLexType(TEXT);
                             lex.SetValue(text);
@@ -338,6 +339,9 @@ Object* Parser::CreateGoodObjectFromHisName(std::string name,  std::map<std::str
     else if(name == "circle") {
         return new Circle(l_property, CIRCLE);
     }
+    else if(name == "triangle"){
+        return new Triangle(l_property, TRIANGLE);
+    }
     else{
         std::cerr << "Aucun objet associé à ce nom de balise" << std::endl;
     }
@@ -424,6 +428,7 @@ bool Parser::CarInLexique(char c) {
     case '=':
     case '/':
     case '.':
+    case '_':
         return true;
         break;
     default:
@@ -464,5 +469,9 @@ bool Parser::IsValidTagName(string name){
             || name == "width" || name == "height" 
             || name == "rect" || name == "color"
             || name == "y" || name == "circle"
-            || name == "radius";
+            || name == "radius" || name == "triangle"
+            || name == "animation" || name == "new_color"
+            || name == "time" || name == "reset_at_end"
+            || name == "background_color";
+            
 }

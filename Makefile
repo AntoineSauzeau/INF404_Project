@@ -34,8 +34,11 @@ rect.o: rect.cpp rect.hpp
 circle.o: circle.cpp circle.hpp
 	$(CC) $(ARGS) circle.cpp
 
-main: main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o circle.o
-	$(CC) -o main main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o circle.o $(LIBS)
+triangle.o: triangle.cpp triangle.hpp
+	$(CC) $(ARGS) triangle.cpp
+
+main: main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o circle.o triangle.o
+	$(CC) -o main $^ $(LIBS)
 
 
 clean:

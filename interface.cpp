@@ -1,10 +1,7 @@
 #include "interface.hpp"
 
-ProgInterface::ProgInterface(Window *window_abstract_object, sf::RenderWindow *window) {
-
-    //std::cout << window_abstract_object->GetWidth() << window_abstract_object->GetHeight();
-    //sf::RenderWindow window(sf::VideoMode(200, 200), "Interface");
-    //this->window_abstract_object = window_abstract_object;
+ProgInterface::ProgInterface(Window *window_abstract_object, sf::RenderWindow *window) 
+{
     this->window = window;
     this->window_abstract_object = window_abstract_object;
 }
@@ -29,6 +26,7 @@ void ProgInterface::Draw() {
     
     window->clear();
 
+    window_abstract_object->Draw(window);
     this->RecDraw(window_abstract_object);
 
     window->display();
@@ -45,6 +43,9 @@ void ProgInterface::RecDraw(Object *object) {
             break;
         case CIRCLE:
             ((Circle *) (*child))->Draw(window);
+            break;
+        case TRIANGLE:
+            ((Triangle *) (*child))->Draw(window);
 
         default:
             break;

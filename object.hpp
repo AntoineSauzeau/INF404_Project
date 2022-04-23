@@ -5,7 +5,9 @@
 #include <string>
 #include <iostream>
 
-enum type_object {WINDOW, RECT, CIRCLE};
+#include <SFML/Graphics.hpp>
+
+enum type_object {WINDOW, RECT, CIRCLE, TRIANGLE};
 
 class Object {
 
@@ -19,6 +21,7 @@ class Object {
         std::string GetProperty(std::string property);
         std::vector<Object*> *GetChildrens();
         type_object GetType();
+        sf::Color GetColorFromName(std::string name);
 
         void AddChildren(Object *children);
 

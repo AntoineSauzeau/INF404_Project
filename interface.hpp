@@ -5,6 +5,7 @@
 #include "window.hpp"
 #include "rect.hpp"
 #include "circle.hpp"
+#include "triangle.hpp"
 
 #include <SFML/Graphics.hpp>
 
