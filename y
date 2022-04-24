@@ -10,13 +10,22 @@
             <y>50</y>
             <width>50</width>
             <height>100</height>
+            <color>green</color>
         </property>
+        <animation>
+            <new_color>grey</new_color>
+            <type>color</type>
+            <event>none</event>
+            <time>5</time>
+            <reset_at_end>true</reset_at_end>
+        </animation>
     </rect>
     <circle>
         <property>
             <x>150</x>
             <y>150</y>
             <radius>30.2</radius>
+            <color>blue</color>
         </property>
     </circle>
     <triangle>

@@ -19,5 +19,4 @@ class Window : public Object {
     private:
         int width = 0;
         int height = 0;
-        sf::Color background_color;
 };

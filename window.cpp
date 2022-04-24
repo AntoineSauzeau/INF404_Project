@@ -4,7 +4,7 @@ Window::Window(std::map<std::string, std::string>* l_property, type_object type)
 
     this->width = std::stoi((*l_property)["width"]);
     this->height = std::stoi((*l_property)["height"]);
-    this->background_color = GetColorFromName((*l_property)["background_color"]);
+    this->color = GetColorFromName((*l_property)["background_color"]);
 
     this->type = type;
 }
@@ -20,7 +20,7 @@ int Window::GetHeight() {
 void Window::Draw(sf::RenderWindow *window) {
 
     sf::RectangleShape rect(sf::Vector2f(width, height));
-    rect.setFillColor(background_color);
+    rect.setFillColor(color);
 
     window->draw(rect);
 }

@@ -17,5 +17,4 @@ class Triangle : public Object {
         int x = 0;
         int y = 0;
         float radius = 1;
-        sf::Color color;
 };

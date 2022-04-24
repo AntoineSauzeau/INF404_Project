@@ -4,6 +4,7 @@
 #include "parser.hpp"
 #include "button.hpp"
 #include "ast_node.hpp"
+#include "animation_handler.hpp"
 //#include "interface.hpp"
 
 #include <SFML/Graphics.hpp>
@@ -26,6 +27,8 @@ int main(int argc, char *argv[]){
         return EXIT_FAILURE;
     }
 
+    AnimationHandler animation_handler;
+    parser.AddAnimationHandler(&animation_handler);
     parser.CreateObjectsFromAst(head_ast);
     Window *window_abstract_object = parser.GetWindowObject();
 
@@ -33,6 +36,7 @@ int main(int argc, char *argv[]){
     sf::RenderWindow window(sf::VideoMode(800, 800), "Interface");
     ProgInterface interface(window_abstract_object, &window);
     interface.Draw();
+
     interface.TreatEvents();
 
     return EXIT_SUCCESS;

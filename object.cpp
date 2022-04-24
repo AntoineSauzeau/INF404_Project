@@ -50,12 +50,24 @@ sf::Color Object::GetColorFromName(std::string name) {
     }
 }
 
+sf::Color Object::GetColor(){
+    return color;
+}
+
 void Object::SetProperties(std::map<std::string, std::string> *l_property) {
     this->l_property = *l_property;
 }
 
+void Object::SetColor(sf::Color color) {
+    this->color = color;
+}
+
 void Object::AddChildren(Object *children) {
     l_children.push_back(children);
+}
+
+void  Object::AddAnimation(Animation *animation) {
+    l_animation.push_back(animation);
 }
 
 void Object::SetParent(Object* parent) {

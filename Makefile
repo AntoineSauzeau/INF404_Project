@@ -1,6 +1,6 @@
 CC=g++
 ARGS=-c -g
-LIBS=-lsfml-graphics -lsfml-window -lsfml-system
+LIBS=-lsfml-graphics -lsfml-window -lsfml-system -lpthread 
 
 all: main
 
@@ -37,7 +37,13 @@ circle.o: circle.cpp circle.hpp
 triangle.o: triangle.cpp triangle.hpp
 	$(CC) $(ARGS) triangle.cpp
 
-main: main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o circle.o triangle.o
+animation.o: animation.cpp animation.hpp
+	$(CC) $(ARGS) animation.cpp
+
+animation_handler.o: animation_handler.cpp animation_handler.hpp
+	$(CC) $(ARGS) animation_handler.cpp
+
+main: main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o circle.o triangle.o animation.o animation_handler.o
 	$(CC) -o main $^ $(LIBS)
 
 

@@ -15,6 +15,7 @@
 #include "rect.hpp"
 #include "circle.hpp"
 #include "triangle.hpp"
+#include "animation_handler.hpp"
 
 
 enum e_aut_state {E_INIT, E_FINAL, E_TEXT};
@@ -53,7 +54,9 @@ class Parser {
         void RecCreateObjectsFromAst(AstNode* node, Object* parent);
         void CreateObjectsFromAst(AstNode* node);
         std::map<std::string, std::string> GetObjectPropertiesFromAst(AstNode* node);
+        std::map<std::string, std::string> GetObjectAnimationsFromAst(AstNode* node);
         Window* GetWindowObject();
+        void AddAnimationHandler(AnimationHandler *animation_handler);
 
         void LexicalError(int l, int c, char car);
         void SyntacticalError(Lexeme lex);
@@ -65,5 +68,6 @@ class Parser {
         //bool lex_seq_end = false;
         ifstream *file;
         vector<Object*> l_object;
+        AnimationHandler *animation_handler = nullptr;
 
 };

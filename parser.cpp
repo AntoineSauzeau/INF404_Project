@@ -374,7 +374,14 @@ void Parser::RecCreateObjectsFromAst(AstNode* node, Object* parent) {
 
     for(std::vector<AstNode*>::iterator child = node->GetChildrens()->begin(); child != node->GetChildrens()->end(); child++){
         
-        if((*child)->GetNodeName() != "property"){
+        if((*child)->GetNodeName() == "animation"){
+            std::map<std::string, std::string> l_animation_property = GetObjectPropertiesFromAst(*child);
+
+            Animation *animation = new Animation(object, &l_animation_property);
+            object->AddAnimation(animation);
+            animation_handler->AddAnimation(animation);
+        }
+        else if((*child)->GetNodeName() != "property"){
             RecCreateObjectsFromAst(*child, object);
         }
     }
@@ -397,6 +404,10 @@ std::map<std::string, std::string> Parser::GetObjectPropertiesFromAst(AstNode* n
 
 Window* Parser::GetWindowObject() {
     return (Window*) l_object[0];
+}
+
+void Parser::AddAnimationHandler(AnimationHandler *animation_handler) {
+    this->animation_handler = animation_handler;
 }
 
 Lexeme Parser::LexemeCourant() {
@@ -472,6 +483,7 @@ bool Parser::IsValidTagName(string name){
             || name == "radius" || name == "triangle"
             || name == "animation" || name == "new_color"
             || name == "time" || name == "reset_at_end"
-            || name == "background_color";
+            || name == "background_color" || name == "type" 
+            || name == "event";
             
 }

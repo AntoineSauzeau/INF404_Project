@@ -1,17 +1,37 @@
 #pragma once
 
+#include <map>
+#include <string>
+#include <time.h>
+
+class Object;
 #include "object.hpp"
 
-enum type_animation {ONCLICK, ONFOCUS}
+#include <SFML/Graphics.hpp>
+
+enum type_animation {SLIDE, COLOR, SIZE};
+enum type_animation_event {NONE, ONCLICK};
 
 class Animation {
 
     public:
-        Animation(Object* object);
+        Animation(Object *object, std::map<std::string, std::string> *l_property);
 
         void Run();
+        void Update();
+        void Reset();
 
-        private:
-            int time = 0;
-            type_animation type;
+        bool IsEnable();
+
+    private:
+        Object *object;
+        int time = 0;
+        clock_t start_clock_time = 0;
+        type_animation type;
+        type_animation_event event;
+        bool reset_at_end = false;
+        bool enable = false;
+
+        sf::Color new_color;
+        sf::Color old_color;
 };
