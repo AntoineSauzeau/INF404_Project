@@ -37,6 +37,9 @@ int main(int argc, char *argv[]){
     ProgInterface interface(window_abstract_object, &window);
     interface.Draw();
 
+    animation_handler.AttachInterface(&interface);
+    animation_handler.StartAnimationHandling();
+
     interface.TreatEvents();
 
     return EXIT_SUCCESS;
