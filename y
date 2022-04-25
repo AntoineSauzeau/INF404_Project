@@ -16,8 +16,10 @@
             <new_color>grey</new_color>
             <type>color</type>
             <event>none</event>
-            <time>5</time>
+            <time>1</time>
             <reset_at_end>true</reset_at_end>
+            <repeat>true</repeat>
+            <break_time>1</break_time>
         </animation>
     </rect>
     <circle>

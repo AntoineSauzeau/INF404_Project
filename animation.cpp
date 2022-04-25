@@ -26,7 +26,17 @@ Animation::Animation(Object *object, std::map<std::string, std::string>*l_proper
     }
     else if((*l_property)["reset_at_end"] == "true"){
         reset_at_end = true;
-    }   
+    }
+
+    if((*l_property)["repeat"] == "true") {
+        repeat = true;
+    }
+    else if((*l_property)["repeat"] == "false"){
+        repeat = false;
+    }
+
+
+    break_time = std::stof((*l_property)["break_time"]);
 
     if(type == COLOR) {
         new_color = Object::GetColorFromName((*l_property)["new_color"]);
@@ -41,8 +51,8 @@ Animation::Animation(Object *object, std::map<std::string, std::string>*l_proper
 
 void Animation::Run() {
 
+    start_time = std::chrono::high_resolution_clock::now();
     enable = true;
-    start_time = std::chrono::system_clock::now();
 
     if(type == COLOR) {
         old_color = object->GetColor();
@@ -52,16 +62,38 @@ void Animation::Run() {
 
 void Animation::Update() {
 
-    std::chrono::system_clock::time_point time_now = std::chrono::system_clock::now();
-    int time_elapsed = std::chrono::duration_cast<std::chrono::seconds> (time_now - start_time).count();
+    int time_elapsed;
+    std::chrono::high_resolution_clock::time_point time_now = std::chrono::high_resolution_clock::now();
 
+    time_elapsed = std::chrono::duration_cast<std::chrono::seconds> (time_now - break_start_time).count();
+    if(in_break){
+        if(time_elapsed < break_time){
+            return;
+        }
+        else{
+            in_break = false;
+            std::cout << "d";
+            Run();
+        }
+    }
+
+    time_elapsed = std::chrono::duration_cast<std::chrono::seconds> (time_now - start_time).count();
     if(time_elapsed >= time){
 
         enable = false;
 
         if(reset_at_end){
-            std::cout << "d" << std::endl;
             Reset();
+        }
+
+        if(repeat){
+            if(break_time == 0){
+                Run();
+            }
+            else{
+                in_break = true;
+                break_start_time = std::chrono::high_resolution_clock::now();
+            }
         }
     }
 }
@@ -75,4 +107,8 @@ void Animation::Reset() {
 
 bool Animation::IsEnable() {
     return enable;
+}
+
+bool Animation::IsInBreak() {
+    return in_break;;
 }

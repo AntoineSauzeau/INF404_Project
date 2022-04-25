@@ -484,6 +484,7 @@ bool Parser::IsValidTagName(string name){
             || name == "animation" || name == "new_color"
             || name == "time" || name == "reset_at_end"
             || name == "background_color" || name == "type" 
-            || name == "event";
+            || name == "event" || name == "repeat"
+            || name == "break_time";
             
 }

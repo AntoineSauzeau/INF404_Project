@@ -2,6 +2,9 @@
 
 AnimationHandler::AnimationHandler() {
 
+}
+
+void AnimationHandler::StartAnimationHandling(){
     thread = new std::thread(&AnimationHandler::Run, this);
     thread->detach();
 }
@@ -12,15 +15,14 @@ void AnimationHandler::Run() {
 
         clock_t start = clock();
 
-        //std::cout << "t";
-
         for(std::vector<Animation *>::iterator a = l_animation.begin(); a != l_animation.end(); a++){
 
-            if((*a)->IsEnable()){
+            if((*a)->IsEnable() || (*a)->IsInBreak()){
                 (*a)->Update();
             }
         }
 
+        interface->Draw();
 
         clock_t end = clock();
         double time_elapsed = (end - start) / CLOCKS_PER_SEC;
@@ -32,4 +34,8 @@ void AnimationHandler::Run() {
 
 void AnimationHandler::AddAnimation(Animation *animation) {
     l_animation.push_back(animation);
+}
+
+void AnimationHandler::AttachInterface(ProgInterface *interface) {
+    this->interface = interface;
 }

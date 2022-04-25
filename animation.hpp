@@ -23,15 +23,20 @@ class Animation {
         void Reset();
 
         bool IsEnable();
+        bool IsInBreak();
 
     private:
         Object *object;
         int time = 0;
-        std::chrono::system_clock::time_point start_time;
+        std::chrono::high_resolution_clock::time_point start_time;
         type_animation type;
         type_animation_event event;
         bool reset_at_end = false;
         bool enable = false;
+        bool repeat = false;
+        double break_time = 0;
+        std::chrono::high_resolution_clock::time_point break_start_time;
+        bool in_break = false;
 
         sf::Color new_color;
         sf::Color old_color;
