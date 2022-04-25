@@ -42,7 +42,7 @@ Animation::Animation(Object *object, std::map<std::string, std::string>*l_proper
 void Animation::Run() {
 
     enable = true;
-    start_clock_time = clock();
+    start_time = std::chrono::system_clock::now();
 
     if(type == COLOR) {
         old_color = object->GetColor();
@@ -52,13 +52,15 @@ void Animation::Run() {
 
 void Animation::Update() {
 
+    std::chrono::system_clock::time_point time_now = std::chrono::system_clock::now();
+    int time_elapsed = std::chrono::duration_cast<std::chrono::seconds> (time_now - start_time).count();
 
-    float u = ((float) (clock() - start_clock_time)) / (float) CLOCKS_PER_SEC;
-    if((((float) (clock() - start_clock_time)) / (float) CLOCKS_PER_SEC) >= time / 1000){
+    if(time_elapsed >= time){
 
         enable = false;
 
         if(reset_at_end){
+            std::cout << "d" << std::endl;
             Reset();
         }
     }

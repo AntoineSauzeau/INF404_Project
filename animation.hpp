@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <time.h>
+#include <chrono>
 
 class Object;
 #include "object.hpp"
@@ -26,7 +27,7 @@ class Animation {
     private:
         Object *object;
         int time = 0;
-        clock_t start_clock_time = 0;
+        std::chrono::system_clock::time_point start_time;
         type_animation type;
         type_animation_event event;
         bool reset_at_end = false;

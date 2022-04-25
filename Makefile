@@ -1,5 +1,5 @@
 CC=g++
-ARGS=-c -g
+ARGS=-c -g -std=c++11
 LIBS=-lsfml-graphics -lsfml-window -lsfml-system -lpthread 
 
 all: main
