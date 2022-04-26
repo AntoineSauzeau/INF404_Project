@@ -342,6 +342,9 @@ Object* Parser::CreateGoodObjectFromHisName(std::string name,  std::map<std::str
     else if(name == "triangle"){
         return new Triangle(l_property, TRIANGLE);
     }
+    else if(name == "image"){
+        return new Image(l_property, IMAGE);
+    }
     else{
         std::cerr << "Aucun objet associé à ce nom de balise" << std::endl;
     }
@@ -485,6 +488,9 @@ bool Parser::IsValidTagName(string name){
             || name == "time" || name == "reset_at_end"
             || name == "background_color" || name == "type" 
             || name == "event" || name == "repeat"
-            || name == "break_time";
+            || name == "break_time" || name == "image"
+            || name == "src" || name == "scale_x"
+            || name == "scale_y" || name == "rotation"
+            || name == "total_rotation_value";
             
 }

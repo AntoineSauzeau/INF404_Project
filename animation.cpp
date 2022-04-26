@@ -13,6 +13,9 @@ Animation::Animation(Object *object, std::map<std::string, std::string>*l_proper
     else if((*l_property)["type"] == "size"){
         type = SIZE;
     }
+    else if((*l_property)["type"] == "rotation"){
+        type = ROTATION;
+    }
 
     if((*l_property)["event"] == "none"){
         event = NONE;
@@ -35,14 +38,16 @@ Animation::Animation(Object *object, std::map<std::string, std::string>*l_proper
         repeat = false;
     }
 
-
     break_time = std::stof((*l_property)["break_time"]);
 
     if(type == COLOR) {
         new_color = Object::GetColorFromName((*l_property)["new_color"]);
     }
+    else if(type == ROTATION){
+        total_rotation_value = std::stof((*l_property)["total_rotation_value"]);
+    }
 
-    time = std::stoi((*l_property)["time"]);
+    time = std::stof((*l_property)["time"]);
 
     if(event == NONE){
         Run();
@@ -60,21 +65,19 @@ void Animation::Run() {
     }
 }
 
-void Animation::Update() {
+void Animation::Update(int n_update_per_second) {
 
     int time_elapsed;
     std::chrono::high_resolution_clock::time_point time_now = std::chrono::high_resolution_clock::now();
 
     time_elapsed = std::chrono::duration_cast<std::chrono::seconds> (time_now - break_start_time).count();
     if(in_break){
-        if(time_elapsed < break_time){
-            return;
-        }
-        else{
+        if(time_elapsed >= break_time){
             in_break = false;
-            std::cout << "d";
             Run();
         }
+
+        return;
     }
 
     time_elapsed = std::chrono::duration_cast<std::chrono::seconds> (time_now - start_time).count();
@@ -95,6 +98,11 @@ void Animation::Update() {
                 break_start_time = std::chrono::high_resolution_clock::now();
             }
         }
+    }
+
+    if(type == ROTATION) {
+        int rotation_value_per_update = floor(total_rotation_value / (time * n_update_per_second));
+        object->Rotate(rotation_value_per_update);
     }
 }
 

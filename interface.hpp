@@ -6,6 +6,7 @@
 #include "rect.hpp"
 #include "circle.hpp"
 #include "triangle.hpp"
+#include "image.hpp"
 
 #include <SFML/Graphics.hpp>
 

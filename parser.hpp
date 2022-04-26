@@ -16,6 +16,7 @@
 #include "circle.hpp"
 #include "triangle.hpp"
 #include "animation_handler.hpp"
+#include "image.hpp"
 
 
 enum e_aut_state {E_INIT, E_FINAL, E_TEXT};

@@ -46,7 +46,10 @@ void ProgInterface::RecDraw(Object *object) {
             break;
         case TRIANGLE:
             ((Triangle *) (*child))->Draw(window);
-
+            break;
+        case IMAGE:
+            ((Image *) (*child))->Draw_(window);
+            break;
         default:
             break;
         }

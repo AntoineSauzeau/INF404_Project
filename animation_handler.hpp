@@ -23,4 +23,6 @@ class AnimationHandler {
         std::vector<Animation *> l_animation;
         std::thread *thread = nullptr;
         ProgInterface *interface = nullptr;
+
+        int N_UPDATE_PER_SECOND = 30;
 };

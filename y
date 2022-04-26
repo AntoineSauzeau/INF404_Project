@@ -16,10 +16,10 @@
             <new_color>grey</new_color>
             <type>color</type>
             <event>none</event>
-            <time>1</time>
+            <time>0.05</time>
             <reset_at_end>true</reset_at_end>
             <repeat>true</repeat>
-            <break_time>1</break_time>
+            <break_time>0.05</break_time>
         </animation>
     </rect>
     <circle>
@@ -38,4 +38,23 @@
             <color>red</color>
         </property>
     </triangle>
+    <image>
+        <property>
+            <x>540</x>
+            <y>540</y>
+            <src>dromadaire.jpg</src>
+            <scale_x>0.4</scale_x>
+            <scale_y>0.4</scale_y>
+            <rotation>150</rotation>
+        </property>
+        <animation>
+            <type>rotation</type>
+            <event>none</event>
+            <time>6</time>
+            <reset_at_end>false</reset_at_end>
+            <repeat>true</repeat>
+            <break_time>0</break_time>
+            <total_rotation_value>360</total_rotation_value>
+        </animation>
+    </image>
 </window>

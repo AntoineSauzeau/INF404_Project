@@ -18,7 +18,7 @@ void AnimationHandler::Run() {
         for(std::vector<Animation *>::iterator a = l_animation.begin(); a != l_animation.end(); a++){
 
             if((*a)->IsEnable() || (*a)->IsInBreak()){
-                (*a)->Update();
+                (*a)->Update(N_UPDATE_PER_SECOND);
             }
         }
 
@@ -26,8 +26,8 @@ void AnimationHandler::Run() {
 
         clock_t end = clock();
         double time_elapsed = (end - start) / CLOCKS_PER_SEC;
-        if(time_elapsed < (1./6)){
-            std::this_thread::sleep_for(std::chrono::milliseconds((int) ((1./6 - time_elapsed) * 1000)));
+        if(time_elapsed < (1./N_UPDATE_PER_SECOND)){
+            std::this_thread::sleep_for(std::chrono::milliseconds((int) ((1./N_UPDATE_PER_SECOND - time_elapsed) * 1000)));
         }
     }
 }

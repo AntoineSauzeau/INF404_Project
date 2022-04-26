@@ -1,8 +1,15 @@
 #include "object.hpp"
 
-Object::Object(Object *parent) {
-    this->parent = parent;
-    this->type = type;
+Object::Object() {
+
+}
+
+Object::Object(std::map<std::string, std::string>* l_property) {
+
+    this->x = std::stoi((*l_property)["x"]);
+    this->y = std::stoi((*l_property)["y"]);
+
+    this->color = GetColorFromName((*l_property)["color"]);
 }
 
 void Object::SetProperty(std::string property, std::string value) {
@@ -66,8 +73,12 @@ void Object::AddChildren(Object *children) {
     l_children.push_back(children);
 }
 
-void  Object::AddAnimation(Animation *animation) {
+void Object::AddAnimation(Animation *animation) {
     l_animation.push_back(animation);
+}
+
+void Object::Rotate(int rotation) {
+    this->rotation = this->rotation + (rotation % 360);
 }
 
 void Object::SetParent(Object* parent) {

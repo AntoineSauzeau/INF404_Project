@@ -43,7 +43,10 @@ animation.o: animation.cpp animation.hpp
 animation_handler.o: animation_handler.cpp animation_handler.hpp
 	$(CC) $(ARGS) animation_handler.cpp
 
-main: main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o circle.o triangle.o animation.o animation_handler.o
+image.o: image.cpp image.hpp
+	$(CC) $(ARGS) image.cpp
+
+main: main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o circle.o triangle.o animation.o animation_handler.o image.o
 	$(CC) -o main $^ $(LIBS)
 
 

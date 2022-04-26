@@ -14,7 +14,5 @@ class Triangle : public Object {
         void Draw(sf::RenderWindow* window);
 
     private:
-        int x = 0;
-        int y = 0;
         float radius = 1;
 };

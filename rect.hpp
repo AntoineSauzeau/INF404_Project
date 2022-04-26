@@ -14,8 +14,6 @@ class Rect : public Object {
         void Draw(sf::RenderWindow* window);
 
     private:
-        int x = 0;
-        int y = 0;
         int width = 0;
         int height = 0;
 };

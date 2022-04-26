@@ -10,12 +10,12 @@ class Animation;
 
 #include <SFML/Graphics.hpp>
 
-enum type_object {WINDOW, RECT, CIRCLE, TRIANGLE};
+enum type_object {WINDOW, RECT, CIRCLE, TRIANGLE, IMAGE};
 
 class Object {
 
     public:
-        Object(Object* parent = nullptr);
+        Object(std::map<std::string, std::string>* l_property);
 
         void SetProperty(std::string property, std::string value);
         void SetProperties(std::map<std::string, std::string>*l_property);
@@ -30,11 +30,15 @@ class Object {
         void AddChildren(Object *children);
         void AddAnimation(Animation *animation);
 
+        void Rotate(int rotation);
+
         static sf::Color GetColorFromName(std::string name);
 
         virtual void Draw();
 
     protected:
+        Object();
+
         std::map<std::string, std::string> l_property;
         std::vector<Animation *> l_animation;
 
@@ -44,4 +48,9 @@ class Object {
         type_object type;
 
         sf::Color color;
+
+        int x = 0;
+        int y = 0;
+
+        double rotation = 0;
 };
