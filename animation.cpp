@@ -46,6 +46,9 @@ Animation::Animation(Object *object, std::map<std::string, std::string>*l_proper
     else if(type == ROTATION){
         total_rotation_value = std::stof((*l_property)["total_rotation_value"]);
     }
+    else if(type == SLIDE){
+
+    }
 
     time = std::stof((*l_property)["time"]);
 
@@ -103,6 +106,11 @@ void Animation::Update(int n_update_per_second) {
     if(type == ROTATION) {
         int rotation_value_per_update = floor(total_rotation_value / (time * n_update_per_second));
         object->Rotate(rotation_value_per_update);
+    }
+
+    if(type == SLIDE) {
+        int slide_x_value_per_update = 0;
+        int slide_y_value_per_update = 0;
     }
 }
 
