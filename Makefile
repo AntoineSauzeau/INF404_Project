@@ -16,8 +16,8 @@ parser.o: parser.cpp parser.hpp
 object.o: object.cpp object.hpp
 	$(CC) $(ARGS) object.cpp
 
-button.o: button.cpp button.hpp object.hpp
-	$(CC) $(ARGS) button.cpp
+text.o: text.cpp text.hpp
+	$(CC) $(ARGS) text.cpp
 
 ast_node.o: ast_node.cpp ast_node.hpp
 	$(CC) $(ARGS) ast_node.cpp
@@ -46,7 +46,7 @@ animation_handler.o: animation_handler.cpp animation_handler.hpp
 image.o: image.cpp image.hpp
 	$(CC) $(ARGS) image.cpp
 
-main: main.o lexeme.o parser.o button.o object.o ast_node.o window.o interface.o rect.o circle.o triangle.o animation.o animation_handler.o image.o
+main: main.o lexeme.o parser.o text.o object.o ast_node.o window.o interface.o rect.o circle.o triangle.o animation.o animation_handler.o image.o
 	$(CC) -o main $^ $(LIBS)
 
 

@@ -32,6 +32,53 @@ void AnimationHandler::Run() {
     }
 }
 
+void AnimationHandler::Event(sf::Event *event) {
+
+    std::cout << event->type << std::endl;
+
+    if(event->type == sf::Event::MouseButtonReleased){
+
+        for(std::vector<Animation *>::iterator a = l_animation.begin(); a != l_animation.end(); a++){
+
+            if((*a)->GetEventType() != type_animation_event::ONCLICK){
+                continue;
+            }
+
+            Object* object = (*a)->GetObject();
+            sf::FloatRect bounds;
+
+            switch (object->GetType())
+            {
+            case type_object::RECT:
+                bounds = ((Rect *) object)->GetBounds();
+                break;
+            case type_object::CIRCLE:
+                bounds = ((Circle *) object)->GetBounds();
+                break;
+            case type_object::TRIANGLE:
+                bounds = ((Triangle *) object)->GetBounds();
+                break;
+            case type_object::IMAGE:
+                bounds = ((Image *) object)->GetBounds();
+                break;
+            case type_object::TEXT:
+                bounds = ((Text *) object)->GetBounds();
+                break;
+            
+            default:
+                break;
+            }
+
+            double x = object->GetX();
+            double y = object->GetY();
+
+            if(bounds.contains(sf::Vector2f(x, y))){
+                (*a)->Run();
+            }
+        }
+    }
+}
+
 void AnimationHandler::AddAnimation(Animation *animation) {
     l_animation.push_back(animation);
 }

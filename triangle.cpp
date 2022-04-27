@@ -5,14 +5,19 @@ Triangle::Triangle(std::map<std::string, std::string>* l_property, type_object t
     this->radius = std::stof((*l_property)["radius"]);
 
     this->type = type;
+
+    triangle = new sf::CircleShape(radius, 3);
 }
 
 void Triangle::Draw(sf::RenderWindow *window) {
     
-    sf::CircleShape triangle(radius, 3);
-    triangle.setPosition(sf::Vector2f(x, y));
-    triangle.setRotation(rotation);
-    triangle.setFillColor(color);
+    triangle->setPosition(sf::Vector2f(x, y));
+    triangle->setRotation(rotation);
+    triangle->setFillColor(color);
 
-    window->draw(triangle);
+    window->draw(*triangle);
+}
+
+sf::FloatRect Triangle::GetBounds(){
+    return triangle->getGlobalBounds();
 }

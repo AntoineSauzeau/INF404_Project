@@ -8,7 +8,7 @@
 
 #include "lexeme.hpp"
 #include "object.hpp"
-#include "button.hpp"
+#include "text.hpp"
 #include "window.hpp"
 #include "interface.hpp"
 #include "ast_node.hpp"
@@ -24,7 +24,7 @@ enum e_aut_state {E_INIT, E_FINAL, E_TEXT};
 typedef e_aut_state aut_state;
 
 
-
+// Classe de Parser
 class Parser {
 
     public:
@@ -33,19 +33,19 @@ class Parser {
 
         // Retourne la liste de lexeme d'un du fichier
         int Analyse(AstNode **head_ast);
-        void AnalyseLexical();
-        Lexeme LexemeCourant();
-        void NextLexeme();
-        lex_type GetNextLexemeType();
+        void AnalyseLexical();  // Lance l'analyse lexicale
+        Lexeme LexemeCourant(); // Renvoie le lexème en cours d'analyse
+        void NextLexeme();  // Passe au lexeème suivant
+        lex_type GetNextLexemeType();   // Renvoie le typedu lexème suivant
 
-        void PushList(Lexeme lex);
-        bool IsAplhaNumeric(char c);
-        bool CarInLexique(char c);
-        bool IsSeparator(char c);
+        void PushList(Lexeme lex);  // Push le lexème dans la liste
+        bool IsAplhaNumeric(char c);    // Renvoie vrai si le caractère est une lettre, faux sinon
+        bool CarInLexique(char c);  // Renvoie vrai si le caractère fait partie du lexique, faux sinon
+        bool IsSeparator(char c);   // Renvoie vrai si le caractère est un séparateur, faux sinon
         
-        bool IsValidTagName(string name);
+        bool IsValidTagName(string name);   // Renvoie vrai si la chaine de caractères fait partie des noms de balise connus, faux sinon
 
-        AstNode* AnalyseSyntactical();
+        AstNode* AnalyseSyntactical();  // Lance l'analyse syntaxique
         AstNode* RecTagCouple(AstNode* parent);
         AstNode* RecExpr(bool tag_couple = false, AstNode* parent = nullptr);
         std::string RecTagName();

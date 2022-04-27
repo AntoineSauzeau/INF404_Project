@@ -20,7 +20,7 @@ Animation::Animation(Object *object, std::map<std::string, std::string>*l_proper
     if((*l_property)["event"] == "none"){
         event = NONE;
     }
-    else if((*l_property)["type"] == "onclick"){
+    else if((*l_property)["event"] == "onclick"){
         event = ONCLICK;
     }
 
@@ -38,7 +38,9 @@ Animation::Animation(Object *object, std::map<std::string, std::string>*l_proper
         repeat = false;
     }
 
-    break_time = std::stof((*l_property)["break_time"]);
+    if(repeat){
+        break_time = std::stof((*l_property)["break_time"]);
+    }
 
     if(type == COLOR) {
         new_color = Object::GetColorFromName((*l_property)["new_color"]);
@@ -47,7 +49,8 @@ Animation::Animation(Object *object, std::map<std::string, std::string>*l_proper
         total_rotation_value = std::stof((*l_property)["total_rotation_value"]);
     }
     else if(type == SLIDE){
-
+        slide_x = std::stoi((*l_property)["slide_x"]);
+        slide_y = std::stoi((*l_property)["slide_y"]);
     }
 
     time = std::stof((*l_property)["time"]);
@@ -58,6 +61,10 @@ Animation::Animation(Object *object, std::map<std::string, std::string>*l_proper
 }
 
 void Animation::Run() {
+
+    if(enable){
+        return;
+    }
 
     start_time = std::chrono::high_resolution_clock::now();
     enable = true;
@@ -109,8 +116,9 @@ void Animation::Update(int n_update_per_second) {
     }
 
     if(type == SLIDE) {
-        int slide_x_value_per_update = 0;
-        int slide_y_value_per_update = 0;
+        double slide_x_value_per_update = ((double) slide_x) / (time * n_update_per_second);
+        double slide_y_value_per_update = ((double) slide_y) / (time * n_update_per_second);
+        object->Translate(slide_x_value_per_update, slide_y_value_per_update);
     }
 }
 
@@ -127,4 +135,12 @@ bool Animation::IsEnable() {
 
 bool Animation::IsInBreak() {
     return in_break;;
+}
+
+Object *Animation::GetObject() {
+    return object;
+}
+
+type_animation_event Animation::GetEventType() {
+    return event;
 }

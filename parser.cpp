@@ -327,23 +327,23 @@ std::string Parser::RecTagName(){
 
 Object* Parser::CreateGoodObjectFromHisName(std::string name,  std::map<std::string, std::string> *l_property) {
 
-    if(name == "button") {
-        return new Button();
+    if(name == "text") {
+        return new Text(l_property, type_object::TEXT);
     }
     else if(name == "window"){
-        return new Window(l_property, WINDOW);
+        return new Window(l_property, type_object::WINDOW);
     }
     else if(name == "rect") {
-        return new Rect(l_property, RECT);
+        return new Rect(l_property, type_object::RECT);
     }
     else if(name == "circle") {
-        return new Circle(l_property, CIRCLE);
+        return new Circle(l_property, type_object::CIRCLE);
     }
     else if(name == "triangle"){
-        return new Triangle(l_property, TRIANGLE);
+        return new Triangle(l_property, type_object::TRIANGLE);
     }
     else if(name == "image"){
-        return new Image(l_property, IMAGE);
+        return new Image(l_property, type_object::IMAGE);
     }
     else{
         std::cerr << "Aucun objet associé à ce nom de balise" << std::endl;
@@ -491,6 +491,9 @@ bool Parser::IsValidTagName(string name){
             || name == "break_time" || name == "image"
             || name == "src" || name == "scale_x"
             || name == "scale_y" || name == "rotation"
-            || name == "total_rotation_value";
+            || name == "total_rotation_value" || name == "text"
+            || name == "style" || name == "text_value"
+            || name == "font" || name == "font_size"
+            || name == "slide_x" || name == "slide_y";
             
 }

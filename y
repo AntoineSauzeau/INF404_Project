@@ -15,7 +15,7 @@
         <animation>
             <new_color>grey</new_color>
             <type>color</type>
-            <event>none</event>
+            <event>onclick</event>
             <time>0.05</time>
             <reset_at_end>true</reset_at_end>
             <repeat>true</repeat>
@@ -29,6 +29,14 @@
             <radius>30.2</radius>
             <color>blue</color>
         </property>
+        <animation>
+            <type>slide</type>
+            <event>none</event>
+            <time>5</time>
+            <repeat>false</repeat>
+            <slide_x>200</slide_x>
+            <slide_y>50</slide_y>
+        </animation>
     </circle>
     <triangle>
         <property>
@@ -42,7 +50,7 @@
         <property>
             <x>540</x>
             <y>540</y>
-            <src>dromadaire.jpg</src>
+            <src>chameau.jpg</src>
             <scale_x>0.4</scale_x>
             <scale_y>0.4</scale_y>
             <rotation>150</rotation>
@@ -57,4 +65,14 @@
             <total_rotation_value>360</total_rotation_value>
         </animation>
     </image>
+    <text>
+        <property>
+            <x>100</x>
+            <y>400</y>
+            <font>Roboto.ttf</font>
+            <font_size>40</font_size>
+            <text_value>Hello world</text_value>
+            <style>underlined</style>
+        </property>
+    </text>
 </window>

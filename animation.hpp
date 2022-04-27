@@ -26,6 +26,9 @@ class Animation {
         bool IsEnable();
         bool IsInBreak();
 
+        Object *GetObject();
+        type_animation_event GetEventType();
+
     private:
         Object *object;
         double time = 0;
@@ -45,4 +48,8 @@ class Animation {
 
         //Rotation
         double total_rotation_value = 0;
+
+        //Translation
+        int slide_x;
+        int slide_y;
 };

@@ -77,6 +77,14 @@ sf::Color Object::GetColor(){
     return color;
 }
 
+double Object::GetX() {
+    return x;
+}
+
+double Object::GetY() {
+    return y;
+}
+
 void Object::SetProperties(std::map<std::string, std::string> *l_property) {
     this->l_property = *l_property;
 }
@@ -95,6 +103,11 @@ void Object::AddAnimation(Animation *animation) {
 
 void Object::Rotate(int rotation) {
     this->rotation = this->rotation + (rotation % 360);
+}
+
+void Object::Translate(double x, double y) {
+    this->x += x;
+    this->y += y;
 }
 
 void Object::SetParent(Object* parent) {

@@ -1,9 +1,10 @@
 #include "interface.hpp"
 
-ProgInterface::ProgInterface(Window *window_abstract_object, sf::RenderWindow *window) 
+ProgInterface::ProgInterface(Window *window_abstract_object, sf::RenderWindow *window, AnimationHandler *animation_handler) 
 {
     this->window = window;
     this->window_abstract_object = window_abstract_object;
+    this->animation_handler = animation_handler;
 }
 
 void ProgInterface::TreatEvents() {
@@ -18,6 +19,8 @@ void ProgInterface::TreatEvents() {
             // évènement "fermeture demandée" : on ferme la fenêtre
             if (event.type == sf::Event::Closed)
                 window->close();
+
+            animation_handler->Event(&event);
         }
     }
 }
@@ -38,17 +41,20 @@ void ProgInterface::RecDraw(Object *object) {
         
         switch ((*child)->GetType())
         {
-        case RECT:
+        case type_object::RECT:
             ((Rect *) (*child))->Draw(window);
             break;
-        case CIRCLE:
+        case type_object::CIRCLE:
             ((Circle *) (*child))->Draw(window);
             break;
-        case TRIANGLE:
+        case type_object::TRIANGLE:
             ((Triangle *) (*child))->Draw(window);
             break;
-        case IMAGE:
+        case type_object::IMAGE:
             ((Image *) (*child))->Draw_(window);
+            break;
+        case type_object::TEXT:
+            ((Text *) (*child))->Draw(window);
             break;
         default:
             break;

@@ -1,6 +1,13 @@
 #pragma once
 
 #include "animation.hpp"
+#include "circle.hpp"
+#include "rect.hpp"
+#include "image.hpp"
+#include "triangle.hpp"
+#include "text.hpp"
+
+class ProgInterface;
 #include "interface.hpp"
 
 #include <time.h>
@@ -16,6 +23,7 @@ class AnimationHandler {
         void AddAnimation(Animation *animation);
         void StartAnimationHandling();
         void Run();
+        void Event(sf::Event *event);
 
         void AttachInterface(ProgInterface *interface);
 

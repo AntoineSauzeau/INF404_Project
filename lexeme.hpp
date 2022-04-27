@@ -14,6 +14,8 @@ enum lex_type {
     END
 };
 
+// Classe pour les Lexèmes
+// Contient les informations et les fonctions nécessaires à la gestion des lexèmes
 class Lexeme {
 
     public:
@@ -22,11 +24,13 @@ class Lexeme {
 
         Lexeme(const Lexeme &l1);
 
+        // Getters
         lex_type GetLexType();
         string GetValue();
         int GetLine();
         int GetColumn();
 
+        // Setters
         void SetLexType(lex_type type);
         void SetValue(string value);
         void SetLine(int line);
