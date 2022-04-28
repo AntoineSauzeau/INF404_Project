@@ -1,0 +1,24 @@
+<window>
+    <property>
+        <width>1000</width>
+        <height>1000</height>
+        <background_color>white</background_color>
+    </property>
+    <rect>
+        <property>
+            <x>50</x>
+            <y>50</y>
+            <width>100</width>
+            <height>200</height>
+            <color>green</color>
+        </property>
+        <animation>
+            <type>slide</type>
+            <event>onclick</event>
+            <time>5</time>
+            <repeat>false</repeat>
+            <slide_x>1000</slide_x>
+            <slide_y>1000</slide_y>
+        </animation>
+    </rect>
+</window>
