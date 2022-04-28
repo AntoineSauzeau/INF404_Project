@@ -29,6 +29,11 @@ Image::Image(std::map<std::string, std::string>* l_property, type_object type):O
 
 }
 
+Image::~Image(){
+    delete sprite;
+    delete texture;
+}
+
 void Image::Draw_(sf::RenderWindow *window) {
     
     sprite->setRotation(rotation);

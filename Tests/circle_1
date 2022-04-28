@@ -1,0 +1,24 @@
+<window>
+    <property>
+        <width>1500</width>
+        <height>1500</height>
+        <background_color>white</background_color>
+    </property>
+    <circle>
+        <property>
+            <x>500</x>
+            <y>500</y>
+            <radius>250</radius>
+            <color>blue</color>
+        </property>
+        <animation>
+            <new_color>grey</new_color>
+            <type>color</type>
+            <event>none</event>
+            <time>0.05</time>
+            <reset_at_end>true</reset_at_end>
+            <repeat>true</repeat>
+            <break_time>0.05</break_time>
+        </animation>
+    </circle>
+</window>

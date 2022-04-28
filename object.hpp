@@ -17,6 +17,7 @@ class Object {
 
     public:
         Object(std::map<std::string, std::string>* l_property);
+        ~Object();
 
         // Setters
         void SetProperty(std::string property, std::string value);

@@ -60,6 +60,10 @@ Animation::Animation(Object *object, std::map<std::string, std::string>*l_proper
     }
 }
 
+Animation::~Animation(){
+    
+}
+
 void Animation::Run() {
 
     if(enable){

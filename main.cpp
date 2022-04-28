@@ -2,7 +2,6 @@
 #include <unistd.h>
 
 #include "parser.hpp"
-#include "button.hpp"
 #include "ast_node.hpp"
 #include "animation_handler.hpp"
 //#include "interface.hpp"
@@ -33,8 +32,8 @@ int main(int argc, char *argv[]){
     Window *window_abstract_object = parser.GetWindowObject();
 
     //Pour une raison inconnue créer la fenêtre ailleurs que dans le main ne fonctionne pas, on la crée donc ici et on passe un pointeur
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Interface");
-    ProgInterface interface(window_abstract_object, &window);
+    sf::RenderWindow window(sf::VideoMode(window_abstract_object->GetWidth(), window_abstract_object->GetHeight()), "Interface");
+    ProgInterface interface(window_abstract_object, &window, &animation_handler);
     interface.Draw();
 
     animation_handler.AttachInterface(&interface);

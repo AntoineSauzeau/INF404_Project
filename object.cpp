@@ -13,6 +13,13 @@ Object::Object(std::map<std::string, std::string>* l_property) {
         x = 0;
     }
 
+    if((*l_property)["rotation"] != ""){
+        this->rotation = std::stoi((*l_property)["rotation"]);
+    }
+    else{
+        rotation = 0;
+    }
+
     if((*l_property)["y"] != ""){
         this->y = std::stoi((*l_property)["y"]);
     }
@@ -26,6 +33,10 @@ Object::Object(std::map<std::string, std::string>* l_property) {
     else{
         color = GetColorFromName("red");
     }
+}
+
+Object::~Object(){
+
 }
 
 void Object::SetProperty(std::string property, std::string value) {

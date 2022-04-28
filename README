@@ -1,0 +1,16 @@
+Projet INF404 - Antoine Sauzeau / Thylen Savignon (INM4)
+
+---- Description ----
+Ce programme a pour but de parser des fichiers respectant un certain format, décrit dans le compte rendu, pour créer une interface.
+
+---- Environnement ----
+Le programme est portable seulement sur Ubuntu, il fonctionne sûrement sur d'autres distributions en faisant quelques légers changement mais on voulait éviter de se compliquer la vie pour rien.
+
+---- Procédure pour lancer ----
+sudo apt-get install libsfml-dev
+make
+./main <fichier>
+
+
+
+Dépôt github : https://github.com/AntoineSauzeau/INF404_Project 

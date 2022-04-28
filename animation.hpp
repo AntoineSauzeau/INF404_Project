@@ -18,6 +18,7 @@ class Animation {
 
     public:
         Animation(Object *object, std::map<std::string, std::string> *l_property);
+        ~Animation();
 
         void Run();
         void Update(int n_update_per_second);

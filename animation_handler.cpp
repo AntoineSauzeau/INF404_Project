@@ -4,6 +4,14 @@ AnimationHandler::AnimationHandler() {
 
 }
 
+AnimationHandler::~AnimationHandler(){
+    delete thread;
+
+    for(std::vector<Animation *>::iterator a = l_animation.begin(); a != l_animation.end(); a++){
+        delete (*a);
+    }
+}   
+
 void AnimationHandler::StartAnimationHandling(){
     thread = new std::thread(&AnimationHandler::Run, this);
     thread->detach();
@@ -33,8 +41,6 @@ void AnimationHandler::Run() {
 }
 
 void AnimationHandler::Event(sf::Event *event) {
-
-    std::cout << event->type << std::endl;
 
     if(event->type == sf::Event::MouseButtonReleased){
 

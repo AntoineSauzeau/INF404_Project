@@ -19,6 +19,7 @@ class ProgInterface {
 
     public:
         ProgInterface(Window *window_abstract_object, sf::RenderWindow *window, AnimationHandler *animation_handler);
+        ~ProgInterface();
 
         void TreatEvents();     // Création de la boucle d'évènements
         void RecDraw(Object *); // Dessin récursif des objets

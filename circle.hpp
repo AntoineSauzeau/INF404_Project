@@ -12,6 +12,7 @@ class Circle : public Object {
 
     public:
         Circle(std::map<std::string, std::string>* l_property, type_object type);   // Constructeur
+        ~Circle();
         void Draw(sf::RenderWindow* window);                                        // Fonction d'affichage
 
         sf::FloatRect GetBounds();

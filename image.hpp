@@ -12,6 +12,7 @@ class Image : public Object {
 
     public:
         Image(std::map<std::string, std::string>* l_property, type_object type);    // Constructeur
+        ~Image();
         void Draw_(sf::RenderWindow* window);                                       // Fonction d'affichage
 
         sf::FloatRect GetBounds();

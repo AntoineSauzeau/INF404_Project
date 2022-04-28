@@ -9,6 +9,10 @@ Circle::Circle(std::map<std::string, std::string>* l_property, type_object type)
     circle = new sf::CircleShape (radius);
 }
 
+Circle::~Circle(){
+    delete circle;
+}
+
 void Circle::Draw(sf::RenderWindow *window) {
     
     circle->setPosition(sf::Vector2f(x, y));

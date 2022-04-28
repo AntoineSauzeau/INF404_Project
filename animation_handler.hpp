@@ -19,6 +19,7 @@ class AnimationHandler {
 
     public:
         AnimationHandler();
+        ~AnimationHandler();
 
         void AddAnimation(Animation *animation);
         void StartAnimationHandling();

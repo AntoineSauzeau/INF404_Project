@@ -7,6 +7,10 @@ ProgInterface::ProgInterface(Window *window_abstract_object, sf::RenderWindow *w
     this->animation_handler = animation_handler;
 }
 
+ProgInterface::~ProgInterface(){
+
+}
+
 void ProgInterface::TreatEvents() {
 
     while (window->isOpen())

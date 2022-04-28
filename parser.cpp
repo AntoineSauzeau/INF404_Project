@@ -3,8 +3,6 @@
 using namespace std;
 
 
-
-
 Parser::Parser(string file_name) {
 
     file = new ifstream;
@@ -99,6 +97,7 @@ void Parser::AnalyseLexical() {
                     case 'A' ... 'Z':
                     case '.':
                     case '_':
+                    case '-':
                         sta = E_TEXT;
                         text += buffer[i];
                         break;
@@ -116,7 +115,7 @@ void Parser::AnalyseLexical() {
 
                     case E_TEXT:
 
-                        if(!IsAplhaNumeric(buffer[i]) && buffer[i] != '.' && buffer[i] != '_'){
+                        if(!IsAplhaNumeric(buffer[i]) && buffer[i] != '.' && buffer[i] != '_' && buffer[i] != '-'){
                             sta = E_INIT;
                             lex.SetLexType(TEXT);
                             lex.SetValue(text);
@@ -443,6 +442,7 @@ bool Parser::CarInLexique(char c) {
     case '/':
     case '.':
     case '_':
+    case '-':
         return true;
         break;
     default:
